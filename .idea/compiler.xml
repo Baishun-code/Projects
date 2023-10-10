@@ -6,8 +6,23 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="PaymentServiceProvider" />
+        <module name="PspEntity-01" />
+        <module name="EurekaServer" />
+        <module name="PspEntity-02" />
+        <module name="PspEntity-0102" />
+        <module name="MessageScheduler" />
+        <module name="GateWay" />
       </profile>
     </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="EurekaServer" options="-parameters" />
+      <module name="GateWay" options="-parameters" />
+      <module name="MessageScheduler" options="-parameters" />
+      <module name="PspEntity-01" options="-parameters" />
+      <module name="PspEntity-0102" options="-parameters" />
+      <module name="PspEntity-02" options="-parameters" />
+    </option>
   </component>
 </project>
