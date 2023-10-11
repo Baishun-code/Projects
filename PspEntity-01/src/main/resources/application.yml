@@ -8,8 +8,8 @@ spring:
   datasource:
     username: bank_branch01
     password: scott
-    url: jdbc:oracle:thin:@localhost:1521:orcl
-    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:mysql://127.0.0.1:3306/jtdb?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
 
 mybatis:

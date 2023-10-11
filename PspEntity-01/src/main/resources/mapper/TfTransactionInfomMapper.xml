@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.psp.mapper.TfTransactionInfomMapper">
+  <resultMap id="BaseResultMap" type="com.psp.entity.TfTransactionInfo">
+    <result column="SERIAL_NO" jdbcType="VARCHAR" property="serialNo" />
+    <result column="CREATE_DT" jdbcType="DATE" property="createDt" />
+    <result column="END_DT" jdbcType="DATE" property="endDt" />
+    <result column="AMT" jdbcType="FLOAT" property="amt" />
+    <result column="CURRENCY" jdbcType="VARCHAR" property="currency" />
+    <result column="ACCT_ID" jdbcType="VARCHAR" property="acctId" />
+    <result column="TARGET_ACCT_ID" jdbcType="VARCHAR" property="targetAcctId" />
+    <result column="TARGET_ACCT_BANK" jdbcType="VARCHAR" property="targetAcctBank" />
+    <result column="TX_STATUS" jdbcType="VARCHAR" property="txStatus" />
+  </resultMap>
+  <insert id="insert" parameterType="com.psp.entity.TfTransactionInfo">
+    insert into tf_transaction_info (SERIAL_NO, CREATE_DT, END_DT, 
+      AMT, CURRENCY, ACCT_ID, 
+      TARGET_ACCT_ID, TARGET_ACCT_BANK, TX_STATUS
+      )
+    values (#{serialNo,jdbcType=VARCHAR}, #{createDt,jdbcType=DATE}, #{endDt,jdbcType=DATE}, 
+      #{amt,jdbcType=FLOAT}, #{currency,jdbcType=VARCHAR}, #{acctId,jdbcType=VARCHAR}, 
+      #{targetAcctId,jdbcType=VARCHAR}, #{targetAcctBank,jdbcType=VARCHAR}, #{txStatus,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.psp.entity.TfTransactionInfo">
+    insert into tf_transaction_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="serialNo != null">
+        SERIAL_NO,
+      </if>
+      <if test="createDt != null">
+        CREATE_DT,
+      </if>
+      <if test="endDt != null">
+        END_DT,
+      </if>
+      <if test="amt != null">
+        AMT,
+      </if>
+      <if test="currency != null">
+        CURRENCY,
+      </if>
+      <if test="acctId != null">
+        ACCT_ID,
+      </if>
+      <if test="targetAcctId != null">
+        TARGET_ACCT_ID,
+      </if>
+      <if test="targetAcctBank != null">
+        TARGET_ACCT_BANK,
+      </if>
+      <if test="txStatus != null">
+        TX_STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="serialNo != null">
+        #{serialNo,jdbcType=VARCHAR},
+      </if>
+      <if test="createDt != null">
+        #{createDt,jdbcType=DATE},
+      </if>
+      <if test="endDt != null">
+        #{endDt,jdbcType=DATE},
+      </if>
+      <if test="amt != null">
+        #{amt,jdbcType=FLOAT},
+      </if>
+      <if test="currency != null">
+        #{currency,jdbcType=VARCHAR},
+      </if>
+      <if test="acctId != null">
+        #{acctId,jdbcType=VARCHAR},
+      </if>
+      <if test="targetAcctId != null">
+        #{targetAcctId,jdbcType=VARCHAR},
+      </if>
+      <if test="targetAcctBank != null">
+        #{targetAcctBank,jdbcType=VARCHAR},
+      </if>
+      <if test="txStatus != null">
+        #{txStatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>
