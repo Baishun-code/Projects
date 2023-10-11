@@ -1,11 +1,13 @@
 package com.psp.service;
 
+import com.psp.mapper.TfTransactionInfomMapper;
+
 import java.util.List;
 
 public interface MessageService {
 
-    List getTxData();
+    List<TfTransactionInfomMapper> getTxData();
 
-    int cancelTxData(List data);
+    int cancelTxData(List<String> data);
 
 }
