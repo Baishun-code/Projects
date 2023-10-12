@@ -1,6 +1,7 @@
 package com.psp.controller;
 
 import com.psp.entity.ResponseV0;
+import com.psp.entity.TfTransactionInfo;
 import com.psp.mapper.TfTransactionInfomMapper;
 import com.psp.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class MessageController {
 
     @RequestMapping("/collect")
     public ResponseV0 getAllPendingInfo(){
-        List<TfTransactionInfomMapper> txData = messageService.getTxData();
+        List<TfTransactionInfo> txData = messageService.getTxData();
         return ResponseV0.success("return information", txData);
     }
 }

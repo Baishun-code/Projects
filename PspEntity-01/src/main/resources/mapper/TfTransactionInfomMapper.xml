@@ -83,4 +83,8 @@
       </if>
     </trim>
   </insert>
+
+    <select id="queryAllRecords" resultType="com.psp.entity.TfTransactionInfo">
+      select * from tf_transaction_info
+    </select>
 </mapper>
