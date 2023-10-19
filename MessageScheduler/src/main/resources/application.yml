@@ -1,6 +1,6 @@
 ##bank-branch01
 server:
-  port: 8001
+  port: 7000
 
 spring:
   application:

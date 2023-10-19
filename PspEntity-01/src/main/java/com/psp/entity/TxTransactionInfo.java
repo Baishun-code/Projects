@@ -110,4 +110,20 @@ public class TxTransactionInfo implements Serializable {
     public void setInsertDt(Date insertDt) {
         this.insertDt = insertDt;
     }
+
+    @Override
+    public String toString() {
+        return "TxTransactionInfo{" +
+                "serialNo='" + serialNo + '\'' +
+                ", createDt=" + createDt +
+                ", endDt=" + endDt +
+                ", amt=" + amt +
+                ", currency='" + currency + '\'' +
+                ", acctId='" + acctId + '\'' +
+                ", targetAcctId='" + targetAcctId + '\'' +
+                ", targetAcctBank='" + targetAcctBank + '\'' +
+                ", txStatus='" + txStatus + '\'' +
+                ", insertDt=" + insertDt +
+                '}';
+    }
 }

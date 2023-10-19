@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController("/message")
+@RestController
 public class MessageController {
 
     @Autowired
