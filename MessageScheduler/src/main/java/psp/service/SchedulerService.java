@@ -18,7 +18,6 @@ public class SchedulerService {
     public void doCollectAndSendMessage(){
         ResponseEntity<ResponseV0> forEntity = restTemplate.getForEntity("http://", ResponseV0.class);
         ResponseV0 body = forEntity.getBody();
-
         System.out.println("------------------------");
     }
 }
