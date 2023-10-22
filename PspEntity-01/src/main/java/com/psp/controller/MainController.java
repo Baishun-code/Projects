@@ -3,6 +3,7 @@ package com.psp.controller;
 import com.psp.entity.ResponseV0;
 import com.psp.entity.TfTransactionInfo;
 import com.psp.entity.TxTransactionInfo;
+import com.psp.service.PaymentService;
 import com.psp.service.impl.MessageServiceImpl;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,10 @@ public class MainController {
     @Autowired
     private MessageServiceImpl messageService;
 
-    @RequestMapping("/test")
-    public String Test(){
-        return "test";
-    }
+    @Autowired
+    private PaymentService paymentService;
+
+
 
     @RequestMapping("/getTxdata")
     public ResponseV0 getAllTxData(){
