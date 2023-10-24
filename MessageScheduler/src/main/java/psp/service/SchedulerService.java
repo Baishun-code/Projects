@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import psp.conf.KafkaMessageService;
 import psp.entity.ResponseV0;
 import psp.entity.TxTransactionInfo;
 
@@ -16,6 +17,8 @@ public class SchedulerService {
 
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private KafkaMessageService kafkaMessageService;
 
     @Scheduled(cron = "${spring.task.scheduling.corn}")
     public void doCollectAndSendMessage(){

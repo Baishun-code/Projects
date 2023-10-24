@@ -21,8 +21,6 @@ public class MainController {
     @Autowired
     private PaymentService paymentService;
 
-
-
     @RequestMapping("/getTxdata")
     public ResponseV0 getAllTxData(){
         List<TxTransactionInfo> txData = messageService.getTxData();
