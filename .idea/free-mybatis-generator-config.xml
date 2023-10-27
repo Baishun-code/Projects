@@ -3,6 +3,29 @@
   <component name="PersistentConfig">
     <option name="historyConfigList">
       <map>
+        <entry key="td_tx_service">
+          <value>
+            <Config>
+              <option name="comment" value="true" />
+              <option name="daoMvnPath" value="src/main/java" />
+              <option name="daoName" value="TdTxServiceMapper" />
+              <option name="daoPackage" value="com.psp.mapper" />
+              <option name="daoPostfix" value="Mapper" />
+              <option name="modelMvnPath" value="src/main/java" />
+              <option name="modelName" value="TdTxService" />
+              <option name="modelPackage" value="com.psp.entity" />
+              <option name="name" value="td_tx_service" />
+              <option name="overrideJava" value="true" />
+              <option name="overrideXML" value="true" />
+              <option name="primaryKey" value="" />
+              <option name="projectFolder" value="$PROJECT_DIR$" />
+              <option name="tableName" value="td_tx_service" />
+              <option name="useSchemaPrefix" value="true" />
+              <option name="xmlMvnPath" value="src/main/resources" />
+              <option name="xmlPackage" value="generator" />
+            </Config>
+          </value>
+        </entry>
         <entry key="tf_acct_balance">
           <value>
             <Config>

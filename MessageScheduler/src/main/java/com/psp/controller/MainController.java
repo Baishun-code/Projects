@@ -1,4 +1,4 @@
-package psp.controller;
+package com.psp.controller;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.web.bind.annotation.RequestMapping;

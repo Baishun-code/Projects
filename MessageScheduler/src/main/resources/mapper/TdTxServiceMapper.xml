@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.psp.mapper.TdTxServiceMapper">
+  <resultMap id="BaseResultMap" type="com.psp.entity.TdTxService">
+    <result column="SER_NAME" jdbcType="VARCHAR" property="serName" />
+    <result column="INTERFACE_TYPE" jdbcType="VARCHAR" property="interfaceType" />
+    <result column="REQ_URI" jdbcType="VARCHAR" property="reqUri" />
+    <result column="INSERT_DT" jdbcType="DATE" property="insertDt" />
+    <result column="UPDATE_DT" jdbcType="DATE" property="updateDt" />
+  </resultMap>
+  <insert id="insert" parameterType="com.psp.entity.TdTxService">
+    insert into td_tx_service (SER_NAME, INTERFACE_TYPE, REQ_URI, 
+      INSERT_DT, UPDATE_DT)
+    values (#{serName,jdbcType=VARCHAR}, #{interfaceType,jdbcType=VARCHAR}, #{reqUri,jdbcType=VARCHAR}, 
+      #{insertDt,jdbcType=DATE}, #{updateDt,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.psp.entity.TdTxService">
+    insert into td_tx_service
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="serName != null">
+        SER_NAME,
+      </if>
+      <if test="interfaceType != null">
+        INTERFACE_TYPE,
+      </if>
+      <if test="reqUri != null">
+        REQ_URI,
+      </if>
+      <if test="insertDt != null">
+        INSERT_DT,
+      </if>
+      <if test="updateDt != null">
+        UPDATE_DT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="serName != null">
+        #{serName,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceType != null">
+        #{interfaceType,jdbcType=VARCHAR},
+      </if>
+      <if test="reqUri != null">
+        #{reqUri,jdbcType=VARCHAR},
+      </if>
+      <if test="insertDt != null">
+        #{insertDt,jdbcType=DATE},
+      </if>
+      <if test="updateDt != null">
+        #{updateDt,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="queryBySerName" resultType="java.lang.String">
+    select REQ_URI
+      from TD_TX_SERVICE
+     where SER_NAME = #{serName}
+       and INTERFACE_TYPE = #{type}
+  </select>
+
+</mapper>

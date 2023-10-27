@@ -1,14 +1,12 @@
-package psp.service;
+package com.psp.service;
 
+import com.psp.conf.KafkaMessageService;
+import com.psp.entity.ResponseV0;
+import com.psp.entity.TxTransactionInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import psp.conf.KafkaMessageService;
-import psp.entity.ResponseV0;
-import psp.entity.TxTransactionInfo;
 
 import java.util.List;
 

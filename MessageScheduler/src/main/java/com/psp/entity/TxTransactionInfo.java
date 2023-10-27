@@ -1,13 +1,14 @@
-package psp.entity;
+package com.psp.entity;
+
 
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * tf_transaction_info
+ * tx_transaction_info
  * @author 
  */
-public class TfTransactionInfo implements Serializable {
+public class TxTransactionInfo implements Serializable {
     private String serialNo;
 
     private Date createDt;
@@ -25,6 +26,8 @@ public class TfTransactionInfo implements Serializable {
     private String targetAcctBank;
 
     private String txStatus;
+
+    private Date insertDt;
 
     private static final long serialVersionUID = 1L;
 
@@ -98,5 +101,13 @@ public class TfTransactionInfo implements Serializable {
 
     public void setTxStatus(String txStatus) {
         this.txStatus = txStatus;
+    }
+
+    public Date getInsertDt() {
+        return insertDt;
+    }
+
+    public void setInsertDt(Date insertDt) {
+        this.insertDt = insertDt;
     }
 }

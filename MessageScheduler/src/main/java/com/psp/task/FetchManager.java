@@ -1,4 +1,4 @@
-package psp.task;
+package com.psp.task;
 
 import org.springframework.kafka.core.KafkaTemplate;
 

@@ -1,4 +1,4 @@
-package psp.entity;
+package com.psp.entity;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package psp.conf;
+package com.psp.conf;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
