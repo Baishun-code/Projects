@@ -18,7 +18,6 @@ public class CallBackThread implements Runnable{
     private ConcurrentHashMap<String, MessageWrapper> map;
     private RestTemplate restTemplate;
     private boolean USING_BATCH;
-    private ScheduleNameService callBackUrlService;
     private int BATCH_SIZE;
     private boolean RUNNING;
     private HashMap<String, List<String>> mapList;
@@ -27,14 +26,12 @@ public class CallBackThread implements Runnable{
                           ConcurrentHashMap<String, MessageWrapper> map,
                           RestTemplate restTemplate,
                           boolean useBatch,
-                          int batchSize,
-                          ScheduleNameService callBackUrlService){
+                          int batchSize){
         this.callBackMessages = callBackMessages;
         this.map = map;
         this.USING_BATCH = useBatch;
         this.BATCH_SIZE = batchSize;
         this.restTemplate = restTemplate;
-        this.callBackUrlService = callBackUrlService;
         RUNNING = true;
         //contains service data pair, because multiple service
         //could have callback requests
@@ -59,7 +56,7 @@ public class CallBackThread implements Runnable{
         //code would block
         String key = callBackMessages.take();
         //get service name of the data
-        String serName = map.get(key).serviceName;
+        String serName = map.get(key).getServiceName();
         //if mapList doesn't contain serName before
         //initialize it
         if(mapList.containsKey(serName)){
@@ -67,11 +64,8 @@ public class CallBackThread implements Runnable{
         }
         List<String> curList = mapList.get(serName);
         curList.add(key);
-        //get the request url from database
-        TdTxService tdTxService = callBackUrlService.queryCallBackUrl(serName);
-        String reqUri = tdTxService.getReqUri();
-        //assemble request url via common assemble method
-        String url = assembleUrl(serName, reqUri);
+
+        String url = map.get(key).getCallBackUrl();
 
         //if size of curList is equal or larger than BATCH_SIZE,
         //send request to the service to cancel tx data, larger

@@ -6,6 +6,8 @@ import com.psp.util.Util;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -29,14 +31,27 @@ public class FetchManager {
     private CallBackThread callBackThread;
     private RestTemplate restTemplate;
     private ScheduleNameService scheduleNameService;
+    private int FETCH_THREAD_GROUP_SIZE;
+    private int CALLBACK_THREAD_GROUP_SIZE;
+    private Thread[] fetchThreadGroup;
+    private Thread[] callbackThreadGroup;
+    private boolean USE_BATCH;
+    private int BATCH_SIZE;
+
 
     public FetchManager(KafkaTemplate<String, String> kafkaTemplate,
                         ScheduleNameService scheduleNameService,
-                        RestTemplate restTemplate){
+                        RestTemplate restTemplate,
+                        int fetchSize,
+                        int callBackSize,
+                        boolean USE_BATCH,
+                        int BATCH_SIZE){
         callBackMessages = new LinkedBlockingDeque<>();
         this.kafkaTemplate = kafkaTemplate;
         messageObjs = new LinkedBlockingDeque<>();
         map = new ConcurrentHashMap<>();
+        FETCH_THREAD_GROUP_SIZE = fetchSize;
+        CALLBACK_THREAD_GROUP_SIZE = callBackSize;
         this.restTemplate = restTemplate;
         this.scheduleNameService = scheduleNameService;
         new Thread(new FetchThread(messageObjs,
@@ -49,16 +64,55 @@ public class FetchManager {
 
     public void pollFromService(){
         List<TdTxService> tdTxServices = scheduleNameService.getAllFetchTdTx();
+        Map<String, MessageWrapper> curMessageMap = new HashMap<>();
         for (int i = 0; i < tdTxServices.size(); i++) {
             TdTxService tdTxService = tdTxServices.get(i);
             String url =
                     Util.assembleUrl(tdTxService.getSerName(), tdTxService.getReqUri());
-            messageObjs
-                    .addFirst(new MessageWrapper(tdTxService.getTopic(),
-                    tdTxService.getSerName(),
-                    url));
+            if(!curMessageMap.containsKey(tdTxService.getSerName())){
+                curMessageMap.put(tdTxService.getSerName(),
+                        new MessageWrapper(tdTxService.getTopic(), tdTxService.getSerName()));
+            }
+            MessageWrapper messageWrapper = curMessageMap.get(tdTxService.getSerName());
+            if("0".equals(tdTxService.getInterfaceType())){
+                messageWrapper.setReqUrl(url);
+            }else {
+                messageWrapper.setCallBackUrl(url);
+            }
         }
 
+    }
+
+    public List<String> getMessagesInHandling(){
+        List<String> res = new ArrayList<>();
+        for (Map.Entry<String, MessageWrapper> messageEntry : map.entrySet()) {
+            res.add(messageEntry.getKey());
+        }
+        return res;
+    }
+
+    private void startThreadGroup(){
+        fetchThreadGroup = new Thread[FETCH_THREAD_GROUP_SIZE];
+        callbackThreadGroup = new Thread[CALLBACK_THREAD_GROUP_SIZE];
+        for (int i = 0; i < fetchThreadGroup.length; i++) {
+            fetchThreadGroup[i] = new Thread(new FetchThread(
+                    messageObjs,
+                    kafkaTemplate,
+                    map,
+                    callBackMessages,
+                    restTemplate,
+                    this));
+            fetchThreadGroup[i].start();
+        }
+
+        for (int i = 0; i < callbackThreadGroup.length; i++) {
+            callbackThreadGroup[i] = new Thread(new CallBackThread(
+                    callBackMessages,
+                    map,
+                    restTemplate,
+                    USE_BATCH,
+                    BATCH_SIZE));
+        }
     }
 
 //    public void put(Map<String, Object> dataMap, String topic, String serviceName){
