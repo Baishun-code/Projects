@@ -28,7 +28,6 @@ public class FetchManager {
     //(2) all back thread can easily get the service name of a serialNum
     private ConcurrentHashMap<String, MessageWrapper> map;
     private FetchThread fetchThread;
-    private CallBackThread callBackThread;
     private RestTemplate restTemplate;
     private ScheduleNameService scheduleNameService;
     private int FETCH_THREAD_GROUP_SIZE;
@@ -54,12 +53,7 @@ public class FetchManager {
         CALLBACK_THREAD_GROUP_SIZE = callBackSize;
         this.restTemplate = restTemplate;
         this.scheduleNameService = scheduleNameService;
-        new Thread(new FetchThread(messageObjs,
-                kafkaTemplate,
-                map,
-                callBackMessages,
-                restTemplate,
-                this)).start();
+        startThreadGroup();
     }
 
     public void pollFromService(){
