@@ -2,15 +2,13 @@ package com.psp.task;
 
 public class MessageWrapper {
 
-    public String key;
-    public Object messObj;
     public String topic;
     public String serviceName;
+    public String reqUrl;
 
-    public MessageWrapper(String k, String topic, Object messObj, String serviceName){
-        this.key = k;
+    public MessageWrapper(String topic, String serviceName,String reqUrl){
         this.topic = topic;
-        this.messObj = messObj;
+        this.reqUrl = reqUrl;
         this.serviceName = serviceName;
     }
 }

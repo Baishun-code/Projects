@@ -14,6 +14,10 @@ public class TdTxService implements Serializable {
 
     private String reqUri;
 
+    private String topic;
+
+    private String deleteFlag;
+
     private Date insertDt;
 
     private Date updateDt;
@@ -42,6 +46,22 @@ public class TdTxService implements Serializable {
 
     public void setReqUri(String reqUri) {
         this.reqUri = reqUri;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+    public String getDeleteFlag() {
+        return deleteFlag;
+    }
+
+    public void setDeleteFlag(String deleteFlag) {
+        this.deleteFlag = deleteFlag;
     }
 
     public Date getInsertDt() {

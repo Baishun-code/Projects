@@ -2,7 +2,9 @@ package com.psp.service;
 
 import com.psp.entity.TdTxService;
 
-public interface CallBackUrlService {
+import java.util.List;
+
+public interface ScheduleNameService {
 
     void addService(TdTxService tdTxService);
 
@@ -10,8 +12,10 @@ public interface CallBackUrlService {
 
     void changeServiceUrl(TdTxService tdTxService);
 
-    String queryCollectUrl(String serName);
+    TdTxService queryCollectUrl(String serName);
 
-    String queryCallBackUrl(String serName);
+    TdTxService queryCallBackUrl(String serName);
+
+    List<TdTxService> getAllFetchTdTx();
 
 }

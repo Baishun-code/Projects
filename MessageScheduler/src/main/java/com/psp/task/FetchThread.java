@@ -1,13 +1,17 @@
 package com.psp.task;
 
+import com.psp.entity.ResponseV0;
 import com.psp.util.Util;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.util.concurrent.FailureCallback;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.SuccessCallback;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingDeque;
 
@@ -18,17 +22,20 @@ public class FetchThread implements Runnable{
     private LinkedBlockingDeque<String> callBackMessages;
     private KafkaTemplate<String, String> kafkaTemplate;
     private FetchManager fetchManager;
+    private RestTemplate restTemplate;
     private boolean RUNNING;
 
     public FetchThread(LinkedBlockingDeque<MessageWrapper> messageObjs,
                        KafkaTemplate<String, String> kafkaTemplate,
                        ConcurrentHashMap<String, MessageWrapper> map,
                        LinkedBlockingDeque<String> callBackMessages,
+                       RestTemplate restTemplate,
                        FetchManager fetchManager){
         this.kafkaTemplate = kafkaTemplate;
         this.callBackMessages = callBackMessages;
         fetchManager.setFetchThread(this);
         this.messageObjs = messageObjs;
+        this.restTemplate = restTemplate;
         this.map = map;
         RUNNING = true;
     }
@@ -38,18 +45,37 @@ public class FetchThread implements Runnable{
         try {
             while (RUNNING){
                 MessageWrapper messageWrapper = messageObjs.take();
-                String topic = messageWrapper.topic;
-                String messageStr = Util.converObjectToJason(messageWrapper.messObj);
-                String key = messageWrapper.key;
-                ListenableFuture<SendResult<String, String>> send
-                        = kafkaTemplate.send(topic, key, messageStr);
-                send.addCallback(new SuccCallBack(callBackMessages),
-                        new FailCallBack(messageObjs, messageWrapper));
+                ResponseEntity<ResponseV0> forEntity =
+                        restTemplate.getForEntity(messageWrapper.reqUrl, ResponseV0.class);
+                ResponseV0 responseV0 = forEntity.getBody();
+                if("200".equals(responseV0.code)){
+                    Map<String, Object> messMap =  Util.retrectMessageFromReponse(responseV0);
+                    String topic = messageWrapper.topic;
+
+                    for (Map.Entry<String, Object> messageEntry : messMap.entrySet()) {
+                        if(!map.contains(messageEntry.getKey())){
+                            map.put(messageEntry.getKey(), messageWrapper);
+                            String messageStr = Util.converObjectToJason(messageEntry.getKey());
+                            ListenableFuture<SendResult<String, String>> send
+                                    = kafkaTemplate.send(topic, messageEntry.getKey(), messageStr);
+                            send.addCallback(new SuccCallBack(callBackMessages),
+                                    new FailCallBack(map, messageEntry.getKey()));
+                        }
+                    }
+                }else {
+                    messageObjs.addFirst(messageWrapper);
+                }
             }
         }catch (Exception e){
             //if there is any exception forcing current thread to stop,
             //start another thread to replace current one
-            new Thread(new FetchThread(messageObjs, kafkaTemplate, map, callBackMessages, fetchManager));
+            new Thread(
+                    new FetchThread(messageObjs,
+                    kafkaTemplate,
+                    map,
+                    callBackMessages,
+                    restTemplate,
+                    fetchManager));
         }
     }
 
@@ -66,18 +92,18 @@ public class FetchThread implements Runnable{
      */
     static class FailCallBack implements  FailureCallback{
 
-        private LinkedBlockingDeque<MessageWrapper> messageObjs;
-        private MessageWrapper messageWrapper;
+        private ConcurrentHashMap<String, MessageWrapper> map;
+        private String key;
 
-        public FailCallBack(LinkedBlockingDeque<MessageWrapper> messageObjs,
-                            MessageWrapper messageWrapper){
-            this.messageObjs = messageObjs;
-            this.messageWrapper = messageWrapper;
+        public FailCallBack(ConcurrentHashMap<String, MessageWrapper> map,
+                            String key){
+            this.map = map;
+            this.key = key;
         }
 
         @Override
         public void onFailure(Throwable ex) {
-            messageObjs.addFirst(messageWrapper);
+            map.remove(key);
         }
     }
 

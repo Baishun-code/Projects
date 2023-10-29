@@ -1,15 +1,16 @@
 package com.psp.task;
 
-import com.psp.service.CallBackUrlService;
+import com.psp.entity.TdTxService;
+import com.psp.service.ScheduleNameService;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 import com.psp.entity.ResponseV0;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingDeque;
+
+import static com.psp.util.Util.assembleUrl;
 
 public class CallBackThread implements Runnable{
 
@@ -17,7 +18,7 @@ public class CallBackThread implements Runnable{
     private ConcurrentHashMap<String, MessageWrapper> map;
     private RestTemplate restTemplate;
     private boolean USING_BATCH;
-    private CallBackUrlService callBackUrlService;
+    private ScheduleNameService callBackUrlService;
     private int BATCH_SIZE;
     private boolean RUNNING;
     private HashMap<String, List<String>> mapList;
@@ -27,7 +28,7 @@ public class CallBackThread implements Runnable{
                           RestTemplate restTemplate,
                           boolean useBatch,
                           int batchSize,
-                          CallBackUrlService callBackUrlService){
+                          ScheduleNameService callBackUrlService){
         this.callBackMessages = callBackMessages;
         this.map = map;
         this.USING_BATCH = useBatch;
@@ -67,7 +68,10 @@ public class CallBackThread implements Runnable{
         List<String> curList = mapList.get(serName);
         curList.add(key);
         //get the request url from database
-        String url = callBackUrlService.queryCallBackUrl(serName);
+        TdTxService tdTxService = callBackUrlService.queryCallBackUrl(serName);
+        String reqUri = tdTxService.getReqUri();
+        //assemble request url via common assemble method
+        String url = assembleUrl(serName, reqUri);
 
         //if size of curList is equal or larger than BATCH_SIZE,
         //send request to the service to cancel tx data, larger

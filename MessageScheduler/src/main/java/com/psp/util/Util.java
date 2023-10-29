@@ -1,9 +1,11 @@
 package com.psp.util;
 
 import com.google.gson.Gson;
+import com.psp.entity.ResponseV0;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 
 public class Util {
@@ -20,6 +22,16 @@ public class Util {
 
     public static Date getDataDate(){
         return new Date();
+    }
+
+    //need completion
+    public static Map<String, Object> retrectMessageFromReponse(ResponseV0 responseV0){
+        return null;
+    }
+
+    //need completion
+    public static String assembleUrl(String serName, String reqUri){
+        return "";
     }
 
     public static String getStringDate(){

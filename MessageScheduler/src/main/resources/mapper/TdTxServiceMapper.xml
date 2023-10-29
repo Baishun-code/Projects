@@ -5,14 +5,18 @@
     <result column="SER_NAME" jdbcType="VARCHAR" property="serName" />
     <result column="INTERFACE_TYPE" jdbcType="VARCHAR" property="interfaceType" />
     <result column="REQ_URI" jdbcType="VARCHAR" property="reqUri" />
+    <result column="TOPIC" jdbcType="VARCHAR" property="topic" />
+    <result column="DELETE_FLAG" jdbcType="VARCHAR" property="deleteFlag" />
     <result column="INSERT_DT" jdbcType="DATE" property="insertDt" />
     <result column="UPDATE_DT" jdbcType="DATE" property="updateDt" />
   </resultMap>
   <insert id="insert" parameterType="com.psp.entity.TdTxService">
     insert into td_tx_service (SER_NAME, INTERFACE_TYPE, REQ_URI, 
-      INSERT_DT, UPDATE_DT)
+      TOPIC, DELETE_FLAG, INSERT_DT, 
+      UPDATE_DT)
     values (#{serName,jdbcType=VARCHAR}, #{interfaceType,jdbcType=VARCHAR}, #{reqUri,jdbcType=VARCHAR}, 
-      #{insertDt,jdbcType=DATE}, #{updateDt,jdbcType=DATE})
+      #{topic,jdbcType=VARCHAR}, #{deleteFlag,jdbcType=VARCHAR}, #{insertDt,jdbcType=DATE}, 
+      #{updateDt,jdbcType=DATE})
   </insert>
   <insert id="insertSelective" parameterType="com.psp.entity.TdTxService">
     insert into td_tx_service
@@ -25,6 +29,12 @@
       </if>
       <if test="reqUri != null">
         REQ_URI,
+      </if>
+      <if test="topic != null">
+        TOPIC,
+      </if>
+      <if test="deleteFlag != null">
+        DELETE_FLAG,
       </if>
       <if test="insertDt != null">
         INSERT_DT,
@@ -43,6 +53,12 @@
       <if test="reqUri != null">
         #{reqUri,jdbcType=VARCHAR},
       </if>
+      <if test="topic != null">
+        #{topic,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteFlag != null">
+        #{deleteFlag,jdbcType=VARCHAR},
+      </if>
       <if test="insertDt != null">
         #{insertDt,jdbcType=DATE},
       </if>
@@ -51,12 +67,17 @@
       </if>
     </trim>
   </insert>
-
-  <select id="queryBySerName" resultType="java.lang.String">
-    select REQ_URI
+  <select id="queryBySerName" resultType="com.psp.entity.TdTxService">
+    select *
       from TD_TX_SERVICE
      where SER_NAME = #{serName}
-       and INTERFACE_TYPE = #{type}
+       and INTERFACE_TYPE = #{flag}
+       and DELETE_FLAG = 'N'
+</select>
+  <select id="queryAllCollectEntity" resultType="com.psp.entity.TdTxService">
+    select *
+      from TD_TX_SERVICE
+     where DELETE_FLAG = 'N'
+       and INTERFACE_TYPE = '0'
   </select>
-
 </mapper>
