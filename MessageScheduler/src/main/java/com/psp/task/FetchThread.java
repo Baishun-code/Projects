@@ -45,17 +45,23 @@ public class FetchThread implements Runnable{
         try {
             while (RUNNING){
                 MessageWrapper messageWrapper = messageObjs.take();
+                //fetch data in sync mode
                 ResponseEntity<ResponseV0> forEntity =
                         restTemplate.getForEntity(messageWrapper.reqUrl, ResponseV0.class);
                 ResponseV0 responseV0 = forEntity.getBody();
+
                 if("200".equals(responseV0.code)){
                     Map<String, Object> messMap =  Util.retrectMessageFromReponse(responseV0);
                     String topic = messageWrapper.topic;
 
                     for (Map.Entry<String, Object> messageEntry : messMap.entrySet()) {
+                        //if the data has already in map, discard the message
                         if(!map.contains(messageEntry.getKey())){
                             map.put(messageEntry.getKey(), messageWrapper);
+                            //convert message object to JSON String
                             String messageStr = Util.converObjectToJason(messageEntry.getKey());
+                            //commit to kafka in async mode, and add call back function
+                            //for future process
                             ListenableFuture<SendResult<String, String>> send
                                     = kafkaTemplate.send(topic, messageEntry.getKey(), messageStr);
                             send.addCallback(new SuccCallBack(callBackMessages),
@@ -63,6 +69,8 @@ public class FetchThread implements Runnable{
                         }
                     }
                 }else {
+                    //if failed to fetch data, the messageWrapper will be put
+                    //back to messageObjs, so that it can be reprocessed
                     messageObjs.addFirst(messageWrapper);
                 }
             }
@@ -87,8 +95,8 @@ public class FetchThread implements Runnable{
 
     /**
      * call back class for handing failure when sending
-     * message to kafka, put the message back to the messageObjs
-     * for handing again
+     * message to kafka, remove the data from map,
+     * so it can be processed again later
      */
     static class FailCallBack implements  FailureCallback{
 

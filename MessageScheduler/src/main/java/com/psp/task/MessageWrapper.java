@@ -1,5 +1,8 @@
 package com.psp.task;
 
+/**
+ * Store kafka topic, service name and corresponding request url
+ */
 public class MessageWrapper {
 
     public String topic;

@@ -16,6 +16,14 @@ public class FetchManager {
     private LinkedBlockingDeque<MessageWrapper> messageObjs;
     private LinkedBlockingDeque<String> callBackMessages;
     private KafkaTemplate<String, String> kafkaTemplate;
+    //store key unique value of each record normally serial number
+    //and MessageWrapper pairs
+    //Functionality:
+    //(1) While the message is in process, it will be stored in the map
+    //and data with same key will be discarded to avoid sending the data
+    //for multiple times, if the message is canceled from its original
+    //service or filed to delivery, the record will be removed from map
+    //(2) all back thread can easily get the service name of a serialNum
     private ConcurrentHashMap<String, MessageWrapper> map;
     private FetchThread fetchThread;
     private CallBackThread callBackThread;
