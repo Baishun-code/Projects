@@ -3,7 +3,9 @@ package com.psp.service;
 import com.psp.entity.TfTransactionInfo;
 import com.psp.entity.TxTransactionInfo;
 
+
 import java.util.List;
+import java.util.Map;
 
 public interface TXService {
 
@@ -13,6 +15,6 @@ public interface TXService {
 
     void deleteFromTxTable(String serialNo);
 
-    List<TxTransactionInfo> queryAllTxRecords();
+    Map<String, TxTransactionInfo> queryAllTxRecords();
 
 }

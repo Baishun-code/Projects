@@ -21,3 +21,6 @@ eureka:
       defaultZone: http://localhost:8761/eureka
     fetch-registry: true
     register-with-eureka: true
+
+bank-entity:
+  current-bank: bank-01

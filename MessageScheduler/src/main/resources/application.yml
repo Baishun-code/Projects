@@ -42,3 +42,9 @@ eureka:
       defaultZone: http://localhost:8761/eureka
     fetch-registry: true
     register-with-eureka: true
+
+fetch-manager:
+  fetch-size: 1
+  callback-size: 1
+  use-batch: true
+  batch-size: 2

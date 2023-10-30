@@ -29,9 +29,10 @@ public class Util {
         return null;
     }
 
-    //need completion
+    //
     public static String assembleUrl(String serName, String reqUri){
-        return "";
+        String url = "http://";
+        return url.concat(serName).concat(reqUri);
     }
 
     public static String getStringDate(){

@@ -5,6 +5,7 @@ import com.psp.entity.TxTransactionInfo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TxTransactionInfoMapper {
     int insert(TxTransactionInfo record);
@@ -13,5 +14,5 @@ public interface TxTransactionInfoMapper {
 
     int deleleBySerialNo(@Param("SerialNo") String SerialNo);
 
-    List<TxTransactionInfo> queryAllRecords();
+    Map<String, TxTransactionInfo> queryAllRecords();
 }

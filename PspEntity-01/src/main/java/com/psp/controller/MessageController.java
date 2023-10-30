@@ -15,23 +15,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.POST;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class MessageController {
 
     @Autowired
-    private MessageService messageService;
-    @Autowired
     private TXService txService;
 
     @RequestMapping("/collect")
     public ResponseV0 getAllPendingInfo(){
-        List<TxTransactionInfo> txData = messageService.getTxData();
+        Map<String, TxTransactionInfo> txData = txService.queryAllTxRecords();
         return ResponseV0.success("return information", txData);
     }
 
-    @RequestMapping("/cnacel")
-    public ResponseV0 cancelTxInfo(@Param("serialNums") List<String> serialNums){
+    @PostMapping("/cnacel")
+    public ResponseV0 cancelTxInfo(@RequestBody List<String> serialNums){
         try {
             for (String serialNum : serialNums) {
                 txService.deleteFromTxTable(serialNum);

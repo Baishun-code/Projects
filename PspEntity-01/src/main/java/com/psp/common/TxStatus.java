@@ -9,8 +9,8 @@ public enum TxStatus {
     REFUNDED("005", "Refunded");
 
 
-    private String code;
-    private String codeDesc;
+    public String code;
+    public String codeDesc;
 
     TxStatus(String code, String codeDesc){
         this.code = code;

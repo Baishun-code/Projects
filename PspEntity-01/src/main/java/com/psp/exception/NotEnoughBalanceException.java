@@ -1,4 +1,4 @@
-package com.psp.common;
+package com.psp.exception;
 
 public class NotEnoughBalanceException extends Exception{
 

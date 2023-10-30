@@ -16,7 +16,7 @@ public class BalanceServiceImpl implements BalanceService {
         synchronized (this){
             double currentBalance = tfAcctBalanceMapper.queryBalanceByIdCurr(acctId, currcd);
             if(currentBalance < amt){
-
+                return;
             }
             tfAcctBalanceMapper.deductAcctBalance(acctId, currcd, -amt);
         }

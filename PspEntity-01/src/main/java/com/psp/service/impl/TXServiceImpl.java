@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TXServiceImpl implements TXService {
@@ -42,7 +43,7 @@ public class TXServiceImpl implements TXService {
     }
 
     @Override
-    public List<TxTransactionInfo> queryAllTxRecords() {
+    public Map<String, TxTransactionInfo> queryAllTxRecords() {
         return txTransactionInfoMapper.queryAllRecords();
     }
 }

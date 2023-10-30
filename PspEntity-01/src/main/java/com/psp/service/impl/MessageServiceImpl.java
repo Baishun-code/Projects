@@ -9,7 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
+
+/**
+ * not used, its funcationality is implemented by txService
+ */
 @Service
 public class MessageServiceImpl implements MessageService {
 
@@ -20,7 +25,7 @@ public class MessageServiceImpl implements MessageService {
     private TXService txService;
 
     @Override
-    public List<TxTransactionInfo> getTxData() {
+    public Map<String, TxTransactionInfo> getTxData() {
         return txService.queryAllTxRecords();
     }
 

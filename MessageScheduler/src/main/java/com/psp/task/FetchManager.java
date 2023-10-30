@@ -3,6 +3,7 @@ package com.psp.task;
 import com.psp.entity.TdTxService;
 import com.psp.service.ScheduleNameService;
 import com.psp.util.Util;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.client.RestTemplate;
 
@@ -13,6 +14,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingDeque;
 
+@Slf4j
 public class FetchManager {
 
     private LinkedBlockingDeque<MessageWrapper> messageObjs;
@@ -86,8 +88,11 @@ public class FetchManager {
     }
 
     private void startThreadGroup(){
+        log.info("Starting threads ...");
         fetchThreadGroup = new Thread[FETCH_THREAD_GROUP_SIZE];
         callbackThreadGroup = new Thread[CALLBACK_THREAD_GROUP_SIZE];
+
+        log.info("Start {} fetch threads ", fetchThreadGroup.length);
         for (int i = 0; i < fetchThreadGroup.length; i++) {
             fetchThreadGroup[i] = new Thread(new FetchThread(
                     messageObjs,
@@ -96,9 +101,11 @@ public class FetchManager {
                     callBackMessages,
                     restTemplate,
                     this));
+            fetchThreadGroup[i].setName("FetchManager-Fetch-Thread-"+i);
             fetchThreadGroup[i].start();
         }
 
+        log.info("Start {} callback threads ", callbackThreadGroup.length);
         for (int i = 0; i < callbackThreadGroup.length; i++) {
             callbackThreadGroup[i] = new Thread(new CallBackThread(
                     callBackMessages,
@@ -106,6 +113,8 @@ public class FetchManager {
                     restTemplate,
                     USE_BATCH,
                     BATCH_SIZE));
+            callbackThreadGroup[i].setName("FetchManager-Callback-Thread-"+i);
+            callbackThreadGroup[i].start();
         }
     }
 
