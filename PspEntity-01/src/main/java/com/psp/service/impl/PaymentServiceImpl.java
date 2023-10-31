@@ -63,6 +63,7 @@ public class PaymentServiceImpl implements PaymentService {
             //transfer to another bank or third party
             //write into tx table
             log.info("Write tx record");
+            info.setTxStatus(TxStatus.TRANSFERING.code);
             txService.writeToTxTable(info);
         }
 

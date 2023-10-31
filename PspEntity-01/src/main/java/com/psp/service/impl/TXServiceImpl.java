@@ -33,6 +33,8 @@ public class TXServiceImpl implements TXService {
         txTransactionInfo.setTargetAcctBank(tfTransactionInfo.getTargetAcctBank());
         txTransactionInfo.setTargetAcctId(tfTransactionInfo.getTargetAcctId());
         txTransactionInfo.setInsertDt(Util.getDataDate());
+        txTransactionInfo.setCurrency(tfTransactionInfo.getCurrency());
+        txTransactionInfo.setTxStatus(tfTransactionInfo.getTxStatus());
 
         txTransactionInfoMapper.insert(txTransactionInfo);
     }
