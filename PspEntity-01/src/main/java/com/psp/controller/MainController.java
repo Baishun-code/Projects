@@ -46,13 +46,15 @@ public class MainController {
             info.setAcctId(acctId);
             info.setCreateDt(new Date());
             info.setCurrency(currency);
+            log.info("Target bank {}", targetBank);
             info.setTargetAcctBank(targetBank);
             info.setTargetAcctId(targetAcctId);
             info.setTxStatus(TxStatus.TRANSFERING.code);
             paymentService.transfer(info);
             return ResponseV0.success("Transfer success");
         }catch (Exception e){
-            return ResponseV0.fail("Fail to transfer");
+            log.info(e.getMessage());
+            return ResponseV0.fail("Fail to transfer due to " + e.getMessage());
         }
     }
 

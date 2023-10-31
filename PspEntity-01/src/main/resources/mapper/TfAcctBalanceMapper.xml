@@ -40,7 +40,7 @@
 
   <update id="deductAcctBalance">
     update tf_acct_balance
-       set balance = balance + #{acctId}
+       set balance = balance + #{amt}
      where ACCT_ID = #{acctId}
        and CURRENCY = #{currcd}
   </update>

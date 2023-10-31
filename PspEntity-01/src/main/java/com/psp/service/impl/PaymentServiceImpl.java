@@ -1,5 +1,6 @@
 package com.psp.service.impl;
 
+import com.psp.common.TxStatus;
 import com.psp.entity.TfTransactionInfo;
 import com.psp.service.*;
 import com.psp.util.Util;
@@ -44,10 +45,6 @@ public class PaymentServiceImpl implements PaymentService {
         log.info("Deduct from balance");
         balanceService.deductFromAcct(curAcctId, currcd, amt);
 
-        //write serial record
-        log.info("write serial record");
-        transactionInfoService.writeSerialRecord(info);
-
         //increase another account
         String targetAcctBank = info.getTargetAcctBank();
         if(curBank.equals(targetAcctBank)){
@@ -57,13 +54,21 @@ public class PaymentServiceImpl implements PaymentService {
             String targetAcctId = info.getTargetAcctId();
             String currency = info.getCurrency();
             balanceService.topUpToAcct(targetAcctId, currency, amt);
-
+            //once successfully finish inner bank transfer
+            //the transaction finished
+            //set the state of current transaction to be FINISHED
+            info.setTxStatus(TxStatus.FINISHED.code);
+            info.setEndDt(new Date());
         }else {
             //transfer to another bank or third party
             //write into tx table
             log.info("Write tx record");
             txService.writeToTxTable(info);
         }
+
+        //write serial record
+        log.info("write serial record");
+        transactionInfoService.writeSerialRecord(info);
     }
 
     private String generateSerialNum(TfTransactionInfo info){
