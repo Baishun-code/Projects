@@ -2,6 +2,7 @@ package com.psp.task;
 
 import com.psp.entity.ResponseV0;
 import com.psp.util.Util;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -15,6 +16,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingDeque;
 
+@Slf4j
 public class FetchThread implements Runnable{
 
     private ConcurrentHashMap<String, MessageWrapper> map;
@@ -45,10 +47,13 @@ public class FetchThread implements Runnable{
         try {
             while (RUNNING){
                 MessageWrapper messageWrapper = messageObjs.take();
+
                 //fetch data in sync mode
+                log.info("Fetching data through url: {}", messageWrapper.reqUrl);
                 ResponseEntity<ResponseV0> forEntity =
                         restTemplate.getForEntity(messageWrapper.reqUrl, ResponseV0.class);
                 ResponseV0 responseV0 = forEntity.getBody();
+                log.info("Response state: {}", responseV0.response);
 
                 if("200".equals(responseV0.code)){
                     Map<String, Object> messMap =  Util.retrectMessageFromReponse(responseV0);

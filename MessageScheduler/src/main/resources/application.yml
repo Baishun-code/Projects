@@ -6,10 +6,10 @@ spring:
   application:
     name: service-payment
   datasource:
-    username: bank_branch01
-    password: scott
-    url: jdbc:oracle:thin:@localhost:1521:orcl
-    driver-class-name: oracle.jdbc.driver.OracleDriver
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3306/schedule_service?serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
   task:
     scheduling:
       corn: 0/1 * * * * *

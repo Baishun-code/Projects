@@ -72,6 +72,16 @@ public class PaymentServiceImpl implements PaymentService {
         transactionInfoService.writeSerialRecord(info);
     }
 
+    @Override
+    public void deposit(TfTransactionInfo info) {
+
+    }
+
+    @Override
+    public void withdraw(TfTransactionInfo info) {
+
+    }
+
     private String generateSerialNum(TfTransactionInfo info){
         String stringDate = Util.getStringDate().substring(3);
         String acctId = info.getAcctId().substring(6);

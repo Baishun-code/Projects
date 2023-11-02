@@ -59,6 +59,7 @@ public class FetchManager {
     }
 
     public void pollFromService(){
+        //all services need data transformation
         List<TdTxService> tdTxServices = scheduleNameService.getAllFetchTdTx();
         Map<String, MessageWrapper> curMessageMap = new HashMap<>();
         for (int i = 0; i < tdTxServices.size(); i++) {
@@ -69,12 +70,19 @@ public class FetchManager {
                 curMessageMap.put(tdTxService.getSerName(),
                         new MessageWrapper(tdTxService.getTopic(), tdTxService.getSerName()));
             }
+
             MessageWrapper messageWrapper = curMessageMap.get(tdTxService.getSerName());
+            // 0 means this is collect url
             if("0".equals(tdTxService.getInterfaceType())){
                 messageWrapper.setReqUrl(url);
-            }else {
+            }else {//cancel url
                 messageWrapper.setCallBackUrl(url);
             }
+        }
+
+        //putting all polling url into messageObjs
+        for (Map.Entry<String, MessageWrapper> stringMessageWrapperEntry : curMessageMap.entrySet()) {
+            messageObjs.add(stringMessageWrapperEntry.getValue());
         }
 
     }

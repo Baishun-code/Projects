@@ -7,4 +7,8 @@ public interface PaymentService {
 
     void transfer(TfTransactionInfo info);
 
+    void deposit(TfTransactionInfo info);
+
+    void withdraw(TfTransactionInfo info);
+
 }
