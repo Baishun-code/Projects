@@ -8,6 +8,7 @@ import com.psp.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +47,11 @@ public class TXServiceImpl implements TXService {
 
     @Override
     public Map<String, TxTransactionInfo> queryAllTxRecords() {
-        return txTransactionInfoMapper.queryAllRecords();
+        HashMap<String, TxTransactionInfo> map = new HashMap<>();
+
+        for (TxTransactionInfo queryAllRecord : txTransactionInfoMapper.queryAllRecords()) {
+            map.put(queryAllRecord.getSerialNo(), queryAllRecord);
+        }
+        return map;
     }
 }

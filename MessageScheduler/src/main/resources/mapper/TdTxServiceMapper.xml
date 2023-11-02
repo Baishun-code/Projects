@@ -74,10 +74,15 @@
        and INTERFACE_TYPE = #{flag}
        and DELETE_FLAG = 'N'
 </select>
-  <select id="queryAllCollectEntity" resultType="com.psp.entity.TdTxService">
-    select *
+  <select id="queryAllCollectEntity" resultMap="BaseResultMap">
+    select SER_NAME,
+           INTERFACE_TYPE,
+           REQ_URI,
+           TOPIC,
+           DELETE_FLAG,
+           INSERT_DT,
+           UPDATE_DT
       from TD_TX_SERVICE
      where DELETE_FLAG = 'N'
-       and INTERFACE_TYPE = '0'
   </select>
 </mapper>

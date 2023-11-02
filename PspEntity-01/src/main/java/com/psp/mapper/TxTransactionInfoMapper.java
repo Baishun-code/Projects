@@ -14,5 +14,5 @@ public interface TxTransactionInfoMapper {
 
     int deleleBySerialNo(@Param("SerialNo") String SerialNo);
 
-    Map<String, TxTransactionInfo> queryAllRecords();
+    List<TxTransactionInfo> queryAllRecords();
 }

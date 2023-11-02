@@ -4,13 +4,14 @@ import com.psp.common.TxStatus;
 import com.psp.entity.ResponseV0;
 import com.psp.entity.TfTransactionInfo;
 import com.psp.entity.TxTransactionInfo;
+import com.psp.mapper.TxTransactionInfoMapper;
 import com.psp.service.PaymentService;
 import com.psp.service.impl.MessageServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
@@ -34,11 +35,11 @@ public class MainController {
     }
 
     @RequestMapping("/transfer")
-    public ResponseV0 transfer(@Param("amt") double amt,
-                               @Param("currency") String currency,
-                               @Param("acctId") String acctId,
-                               @Param("targetAcctId") String targetAcctId,
-                               @Param("targetBank") String targetBank){
+    public ResponseV0 transfer(@RequestParam("amt") double amt,
+                               @RequestParam("currency") String currency,
+                               @RequestParam("acctId") String acctId,
+                               @RequestParam("targetAcctId") String targetAcctId,
+                               @RequestParam("targetBank") String targetBank){
         try {
             log.info("Request for transfering from {} coming in ...", acctId);
             TfTransactionInfo info = new TfTransactionInfo();

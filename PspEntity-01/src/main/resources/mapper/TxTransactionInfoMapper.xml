@@ -96,7 +96,16 @@
     where SERIAL_NO = #{SerialNo}
   </delete>
 
-  <select id="queryAllRecords" resultType="com.psp.entity.TxTransactionInfo">
-    select * from TX_TRANSACTION_INFO
+  <select id="queryAllRecords" resultMap="BaseResultMap">
+    select SERIAL_NO     SERIAL_NO,
+           CREATE_DT     CREATE_DT,
+           END_DT     END_DT,
+           AMT     AMT,
+           CURRENCY     CURRENCY,
+           ACCT_ID     ACCT_ID,
+           TARGET_ACCT_ID     TARGET_ACCT_ID,
+           TARGET_ACCT_BANK     TARGET_ACCT_BANK,
+           TX_STATUS     TX_STATUS,
+           INSERT_DT     INSERT_DT  from TX_TRANSACTION_INFO
   </select>
 </mapper>
