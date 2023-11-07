@@ -23,7 +23,7 @@ public class FetchThread implements Runnable{
     private LinkedBlockingDeque<MessageWrapper> messageObjs;
     private LinkedBlockingDeque<String> callBackMessages;
     private KafkaTemplate<String, String> kafkaTemplate;
-    private FetchManager fetchManager;
+    private FetchManagerService fetchManager;
     private RestTemplate restTemplate;
     private boolean RUNNING;
 
@@ -32,7 +32,7 @@ public class FetchThread implements Runnable{
                        ConcurrentHashMap<String, MessageWrapper> map,
                        LinkedBlockingDeque<String> callBackMessages,
                        RestTemplate restTemplate,
-                       FetchManager fetchManager){
+                       FetchManagerService fetchManager){
         this.kafkaTemplate = kafkaTemplate;
         this.callBackMessages = callBackMessages;
         fetchManager.setFetchThread(this);
@@ -47,16 +47,29 @@ public class FetchThread implements Runnable{
         try {
             while (RUNNING){
                 MessageWrapper messageWrapper = messageObjs.take();
-
+                if(messageWrapper == null){
+                    continue;
+                }
                 //fetch data in sync mode
                 log.info("Fetching data through url: {}", messageWrapper.reqUrl);
-                ResponseEntity<ResponseV0> forEntity =
-                        restTemplate.getForEntity(messageWrapper.reqUrl, ResponseV0.class);
+                ResponseEntity<ResponseV0> forEntity = null;
+                try {
+                    forEntity =
+                            restTemplate.getForEntity(messageWrapper.reqUrl, ResponseV0.class);
+                }catch (Exception e){
+                    log.error(e.getMessage());
+                }
+
+                if(forEntity == null){
+                    continue;
+                }
+
                 ResponseV0 responseV0 = forEntity.getBody();
                 log.info("Response state: {}", responseV0.response);
 
-                if("200".equals(responseV0.code)){
-                    Map<String, Object> messMap =  Util.retrectMessageFromReponse(responseV0);
+                Map<String, Object> messMap =  Util.retrectMessageFromReponse(responseV0);
+                if("200".equals(responseV0.code) && messMap.size() > 0){
+
                     String topic = messageWrapper.topic;
 
                     for (Map.Entry<String, Object> messageEntry : messMap.entrySet()) {
@@ -82,6 +95,7 @@ public class FetchThread implements Runnable{
         }catch (Exception e){
             //if there is any exception forcing current thread to stop,
             //start another thread to replace current one
+            System.out.println("Start new Thread ...");
             new Thread(
                     new FetchThread(messageObjs,
                     kafkaTemplate,

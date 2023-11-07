@@ -2,6 +2,7 @@ package com.psp.task;
 
 import com.psp.entity.TdTxService;
 import com.psp.service.ScheduleNameService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 import com.psp.entity.ResponseV0;
@@ -12,6 +13,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 import static com.psp.util.Util.assembleUrl;
 
+@Slf4j
 public class CallBackThread implements Runnable{
 
     private LinkedBlockingDeque<String> callBackMessages;
@@ -45,7 +47,7 @@ public class CallBackThread implements Runnable{
             try {
                 doWork();
             }catch (Exception e){
-
+                log.error("Callback thread error occured: {}", e.getMessage());
             }
         }
     }
@@ -55,11 +57,12 @@ public class CallBackThread implements Runnable{
         //if there is no data in the queue, the
         //code would block
         String key = callBackMessages.take();
+        log.info("Send back serial num {}", key);
         //get service name of the data
         String serName = map.get(key).getServiceName();
         //if mapList doesn't contain serName before
         //initialize it
-        if(mapList.containsKey(serName)){
+        if(!mapList.containsKey(serName)){
             mapList.put(serName, new LinkedList<>());
         }
         List<String> curList = mapList.get(serName);
@@ -73,6 +76,7 @@ public class CallBackThread implements Runnable{
         //send back, next iteration the size of curList will be larger
         if((USING_BATCH && curList.size() >= BATCH_SIZE) ||
                 !USING_BATCH){//if not in batch model, send data directly
+            log.info("Callback-thread sending back data");
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));

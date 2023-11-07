@@ -24,9 +24,9 @@ public class Util {
         return new Date();
     }
 
-    //need completion
+    //
     public static Map<String, Object> retrectMessageFromReponse(ResponseV0 responseV0){
-        return null;
+        return (Map<String, Object>) responseV0.response;
     }
 
     //

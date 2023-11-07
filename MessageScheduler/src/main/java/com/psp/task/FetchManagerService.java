@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingDeque;
 
 @Slf4j
-public class FetchManager {
+public class FetchManagerService implements FetchManger{
 
     private LinkedBlockingDeque<MessageWrapper> messageObjs;
     private LinkedBlockingDeque<String> callBackMessages;
@@ -40,13 +40,13 @@ public class FetchManager {
     private int BATCH_SIZE;
 
 
-    public FetchManager(KafkaTemplate<String, String> kafkaTemplate,
-                        ScheduleNameService scheduleNameService,
-                        RestTemplate restTemplate,
-                        int fetchSize,
-                        int callBackSize,
-                        boolean USE_BATCH,
-                        int BATCH_SIZE){
+    public FetchManagerService(KafkaTemplate<String, String> kafkaTemplate,
+                               ScheduleNameService scheduleNameService,
+                               RestTemplate restTemplate,
+                               int fetchSize,
+                               int callBackSize,
+                               boolean USE_BATCH,
+                               int BATCH_SIZE){
         callBackMessages = new LinkedBlockingDeque<>();
         this.kafkaTemplate = kafkaTemplate;
         messageObjs = new LinkedBlockingDeque<>();

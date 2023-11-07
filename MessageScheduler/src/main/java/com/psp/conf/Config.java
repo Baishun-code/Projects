@@ -1,17 +1,13 @@
 package com.psp.conf;
 
 import com.psp.service.ScheduleNameService;
-import com.psp.task.FetchManager;
-import com.psp.task.FetchThread;
+import com.psp.task.FetchManagerService;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.client.RestTemplate;
-
-import javax.validation.Valid;
 
 @Configuration
 public class Config {
@@ -32,10 +28,10 @@ public class Config {
     }
 
     @Bean
-    public FetchManager fetchManager(KafkaTemplate<String, String> kafkaTemplate,
-                                     ScheduleNameService scheduleNameService,
-                                     RestTemplate restTemplate){
-        return new FetchManager(kafkaTemplate,
+    public FetchManagerService fetchManager(KafkaTemplate<String, String> kafkaTemplate,
+                                            ScheduleNameService scheduleNameService,
+                                            RestTemplate restTemplate){
+        return new FetchManagerService(kafkaTemplate,
                 scheduleNameService,
                 restTemplate,
                 fetchSize,

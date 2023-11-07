@@ -6,6 +6,7 @@ import com.psp.entity.TxTransactionInfo;
 import com.psp.mapper.TfTransactionInfomMapper;
 import com.psp.service.MessageService;
 import com.psp.service.TXService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@Slf4j
 public class MessageController {
 
     @Autowired
@@ -33,6 +35,7 @@ public class MessageController {
     public ResponseV0 cancelTxInfo(@RequestBody List<String> serialNums){
         try {
             for (String serialNum : serialNums) {
+                log.info("Receiving serial data {}", serialNum);
                 txService.deleteFromTxTable(serialNum);
             }
         }catch (Exception e){
