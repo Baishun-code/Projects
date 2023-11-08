@@ -9,4 +9,5 @@ public interface AcctService {
     ResponseV0 closeAcct();
 
     ResponseV0 lockAcct();
+
 }

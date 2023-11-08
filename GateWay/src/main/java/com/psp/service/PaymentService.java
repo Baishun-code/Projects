@@ -1,12 +1,32 @@
 package com.psp.service;
 
 import com.psp.entity.ResponseV0;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+@FeignClient(value = "service-payment", path = "v1")
 public interface PaymentService {
 
-    ResponseV0 transferTo();
+    @RequestMapping(value = "/transfer", method = RequestMethod.GET)
+    ResponseV0 transferTo(@RequestParam("amt") double amt,
+                          @RequestParam("currency") String currency,
+                          @RequestParam("acctId") String acctId,
+                          @RequestParam("targetAcctId") String targetAcctId,
+                          @RequestParam("targetBank") String targetBank);
 
-    ResponseV0 withdrawFromAcct();
+//    @RequestMapping("/")
+//    ResponseV0 withdrawFromAcct(@RequestParam("amt") double amt,
+//                                @RequestParam("currency") String currency,
+//                                @RequestParam("acctId") String acctId);
+//
+//    @RequestMapping("/")
+//    ResponseV0 DepositToAcct(@RequestParam("amt") double amt,
+//                             @RequestParam("currency") String currency,
+//                             @RequestParam("acctId") String acctId);
 
-    ResponseV0 DepositToAcct();
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    ResponseV0 test();
+
 }

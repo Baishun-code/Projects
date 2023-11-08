@@ -59,5 +59,10 @@ public class MainController {
         }
     }
 
+    @RequestMapping("/test")
+    public ResponseV0 test(){
+        return ResponseV0.success("test", "test");
+    }
+
 
 }

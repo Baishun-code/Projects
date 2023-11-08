@@ -45,14 +45,4 @@ public class MessageController {
         return ResponseV0.success("Cancel data successfully");
     }
 
-    @PostMapping("/tx/test")
-    public ResponseV0 test(@RequestBody List<String> list){
-        System.out.println("====================");
-        for (String s : list) {
-            System.out.println(s);
-        }
-        return ResponseV0.success("Test");
-    }
-
-
 }
