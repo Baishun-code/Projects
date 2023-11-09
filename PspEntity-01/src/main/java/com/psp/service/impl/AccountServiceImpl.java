@@ -14,6 +14,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void openAcct(TdAccountInfo tdAccountInfo) {
+        //need further implementation
+        //because when creating new account,
+        //there must be a client for the account to bind
         tdAccountInfoMapper.insert(tdAccountInfo);
     }
 

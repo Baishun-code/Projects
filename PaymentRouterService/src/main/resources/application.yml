@@ -1,0 +1,48 @@
+##bank-branch01
+server:
+  port: 8010
+
+spring:
+  application:
+    name: service-payment
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3306/pay_router_service?serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      batch-size: 1
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: -1
+    consumer:
+      enable-auto-commit: false
+      group-id: payment-01
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    template:
+      default-topic: payment
+    listener:
+      missing-topics-fatal: false
+      ack-mode: manual
+
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
+#No need to access service information
+#because all communications are done through MQ-Kafka,
+#besides when interacting with other banks, precise ip-port
+#is in the database
+
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka
+#    fetch-registry: true
+#    register-with-eureka: true
+
+bank-entity:
+  current-bank: bank-01
