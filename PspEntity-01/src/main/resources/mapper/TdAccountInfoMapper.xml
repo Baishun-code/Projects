@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.psp.mapper.TdAccountInfoMapper">
+  <resultMap id="BaseResultMap" type="com.psp.entity.TdAccountInfo">
+    <result column="ACCT_ID" jdbcType="VARCHAR" property="acctId" />
+    <result column="ACCT_OWNER_ID" jdbcType="VARCHAR" property="acctOwnerId" />
+    <result column="ACCT_STATUS" jdbcType="VARCHAR" property="acctStatus" />
+    <result column="OPEN_DATE" jdbcType="DATE" property="openDate" />
+    <result column="CLOSE_DATE" jdbcType="DATE" property="closeDate" />
+  </resultMap>
+  <insert id="insert" parameterType="com.psp.entity.TdAccountInfo">
+    insert into td_account_info (ACCT_ID, ACCT_OWNER_ID, ACCT_STATUS, 
+      OPEN_DATE, CLOSE_DATE)
+    values (#{acctId,jdbcType=VARCHAR}, #{acctOwnerId,jdbcType=VARCHAR}, #{acctStatus,jdbcType=VARCHAR}, 
+      #{openDate,jdbcType=DATE}, #{closeDate,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.psp.entity.TdAccountInfo">
+    insert into td_account_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="acctId != null">
+        ACCT_ID,
+      </if>
+      <if test="acctOwnerId != null">
+        ACCT_OWNER_ID,
+      </if>
+      <if test="acctStatus != null">
+        ACCT_STATUS,
+      </if>
+      <if test="openDate != null">
+        OPEN_DATE,
+      </if>
+      <if test="closeDate != null">
+        CLOSE_DATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="acctId != null">
+        #{acctId,jdbcType=VARCHAR},
+      </if>
+      <if test="acctOwnerId != null">
+        #{acctOwnerId,jdbcType=VARCHAR},
+      </if>
+      <if test="acctStatus != null">
+        #{acctStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="openDate != null">
+        #{openDate,jdbcType=DATE},
+      </if>
+      <if test="closeDate != null">
+        #{closeDate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateAcctToCertainFlag">
+    update TD_ACCOUNT_INFO
+       set ACCT_STATUS = #{targetFlag}
+    where  acctId = #{acctId}
+  </update>
+</mapper>

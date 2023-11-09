@@ -74,12 +74,18 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public void deposit(TfTransactionInfo info) {
-
+        String acctId = info.getAcctId();
+        Double amt = info.getAmt();
+        String currency = info.getCurrency();
+        balanceService.topUpToAcct(acctId, currency, amt);
     }
 
     @Override
     public void withdraw(TfTransactionInfo info) {
-
+        String acctId = info.getAcctId();
+        Double amt = info.getAmt();
+        String currency = info.getCurrency();
+        balanceService.deductFromAcct(acctId, currency, amt);
     }
 
     private String generateSerialNum(TfTransactionInfo info){

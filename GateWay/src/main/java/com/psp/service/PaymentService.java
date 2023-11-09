@@ -16,15 +16,15 @@ public interface PaymentService {
                           @RequestParam("targetAcctId") String targetAcctId,
                           @RequestParam("targetBank") String targetBank);
 
-//    @RequestMapping("/")
-//    ResponseV0 withdrawFromAcct(@RequestParam("amt") double amt,
-//                                @RequestParam("currency") String currency,
-//                                @RequestParam("acctId") String acctId);
-//
-//    @RequestMapping("/")
-//    ResponseV0 DepositToAcct(@RequestParam("amt") double amt,
-//                             @RequestParam("currency") String currency,
-//                             @RequestParam("acctId") String acctId);
+    @RequestMapping(value = "/withdraw", method = RequestMethod.GET)
+    ResponseV0 withdrawFromAcct(@RequestParam("amt") double amt,
+                                @RequestParam("currency") String currency,
+                                @RequestParam("acctId") String acctId);
+
+    @RequestMapping(value = "/topup", method = RequestMethod.GET)
+    ResponseV0 DepositToAcct(@RequestParam("amt") double amt,
+                             @RequestParam("currency") String currency,
+                             @RequestParam("acctId") String acctId);
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     ResponseV0 test();

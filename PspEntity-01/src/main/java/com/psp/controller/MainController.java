@@ -54,9 +54,43 @@ public class MainController {
             paymentService.transfer(info);
             return ResponseV0.success("Transfer success");
         }catch (Exception e){
-            log.info(e.getMessage());
+            log.error(e.getMessage());
             return ResponseV0.fail("Fail to transfer due to " + e.getMessage());
         }
+    }
+
+    @RequestMapping("/topup")
+    public ResponseV0 topUp(@RequestParam("amt") double amt,
+                            @RequestParam("currency") String currency,
+                            @RequestParam("acctId") String acctId){
+        try {
+            TfTransactionInfo info = new TfTransactionInfo();
+            info.setAcctId(acctId);
+            info.setCurrency(currency);
+            info.setAmt(amt);
+            paymentService.deposit(info);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return ResponseV0.fail(e.getMessage());
+        }
+        return ResponseV0.success("Successfully deposited to account");
+    }
+
+    @RequestMapping("/withdraw")
+    public ResponseV0 withdraw(@RequestParam("amt") double amt,
+                               @RequestParam("currency") String currency,
+                               @RequestParam("acctId") String acctId){
+        try {
+            TfTransactionInfo info = new TfTransactionInfo();
+            info.setAcctId(acctId);
+            info.setCurrency(currency);
+            info.setAmt(amt);
+            paymentService.withdraw(info);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return ResponseV0.fail(e.getMessage());
+        }
+        return ResponseV0.success("Successfully to account");
     }
 
     @RequestMapping("/test")
