@@ -32,6 +32,8 @@ spring:
 mybatis:
   mapper-locations: classpath:mapper/*.xml
 
+Database-kafka-listener:
+  worker-threads: 1
 #No need to access service information
 #because all communications are done through MQ-Kafka,
 #besides when interacting with other banks, precise ip-port
