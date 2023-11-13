@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.psp.mapper.TdBankMessageInfoMapper">
+  <resultMap id="BaseResultMap" type="com.psp.entity.TdBankMessageInfo">
+    <result column="BANK_ID" jdbcType="VARCHAR" property="bankId" />
+    <result column="BANK_NAME" jdbcType="VARCHAR" property="bankName" />
+    <result column="ENCODE_TYPE" jdbcType="VARCHAR" property="encodeType" />
+    <result column="REQ_TYPE" jdbcType="VARCHAR" property="reqType" />
+    <result column="BANK_IP" jdbcType="VARCHAR" property="bankIp" />
+    <result column="BANK_PORT" jdbcType="VARCHAR" property="bankPort" />
+    <result column="BANK_URL" jdbcType="VARCHAR" property="bankUrl" />
+  </resultMap>
+  <insert id="insert" parameterType="com.psp.entity.TdBankMessageInfo">
+    insert into td_bank_message_info (BANK_ID, BANK_NAME, ENCODE_TYPE, 
+      REQ_TYPE, BANK_IP, BANK_PORT, 
+      BANK_URL)
+    values (#{bankId,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR}, #{encodeType,jdbcType=VARCHAR}, 
+      #{reqType,jdbcType=VARCHAR}, #{bankIp,jdbcType=VARCHAR}, #{bankPort,jdbcType=VARCHAR}, 
+      #{bankUrl,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.psp.entity.TdBankMessageInfo">
+    insert into td_bank_message_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bankId != null">
+        BANK_ID,
+      </if>
+      <if test="bankName != null">
+        BANK_NAME,
+      </if>
+      <if test="encodeType != null">
+        ENCODE_TYPE,
+      </if>
+      <if test="reqType != null">
+        REQ_TYPE,
+      </if>
+      <if test="bankIp != null">
+        BANK_IP,
+      </if>
+      <if test="bankPort != null">
+        BANK_PORT,
+      </if>
+      <if test="bankUrl != null">
+        BANK_URL,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bankId != null">
+        #{bankId,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null">
+        #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="encodeType != null">
+        #{encodeType,jdbcType=VARCHAR},
+      </if>
+      <if test="reqType != null">
+        #{reqType,jdbcType=VARCHAR},
+      </if>
+      <if test="bankIp != null">
+        #{bankIp,jdbcType=VARCHAR},
+      </if>
+      <if test="bankPort != null">
+        #{bankPort,jdbcType=VARCHAR},
+      </if>
+      <if test="bankUrl != null">
+        #{bankUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="queryBankInfo" resultType="com.psp.mapper.TdBankMessageInfoMapper">
+    select *
+      from TD_BANK_MESSAGE_INFO
+     where BANK_ID = #{bankId}
+  </select>
+
+</mapper>

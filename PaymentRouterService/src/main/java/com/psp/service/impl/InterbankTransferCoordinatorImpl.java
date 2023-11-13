@@ -10,7 +10,6 @@ public class InterbankTransferCoordinatorImpl implements InterbankTransferCoordi
 
     private RestTemplate restTemplate;
 
-
     public InterbankTransferCoordinatorImpl(){
         restTemplate = new RestTemplate();
     }

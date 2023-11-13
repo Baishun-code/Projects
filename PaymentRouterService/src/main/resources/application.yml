@@ -32,7 +32,7 @@ spring:
 mybatis:
   mapper-locations: classpath:mapper/*.xml
 
-Database-kafka-listener:
+kafka-listener-handler:
   worker-threads: 1
 #No need to access service information
 #because all communications are done through MQ-Kafka,
