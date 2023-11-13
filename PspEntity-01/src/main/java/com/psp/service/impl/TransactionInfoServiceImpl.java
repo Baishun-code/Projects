@@ -16,4 +16,20 @@ public class TransactionInfoServiceImpl implements TransactionInfoService {
     public void writeSerialRecord(TfTransactionInfo tfTransactionInfo) {
         tfTransactionInfomMapper.insert(tfTransactionInfo);
     }
+
+    /**
+     *
+     * @param serialNo
+     * @param statusBefore
+     * @param status
+     *
+     * Use optimistic lock which is implemented by database record lock
+     * to guarantee idempotent, if the message is already processed,
+     * the statusBefore will not match, so the record can only be updated
+     * for one time
+     */
+    @Override
+    public void changeTransactionState(String serialNo, String statusBefore, String status) {
+        tfTransactionInfomMapper.updateTransactionStatus(serialNo, statusBefore, status);
+    }
 }

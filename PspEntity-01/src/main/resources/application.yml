@@ -24,3 +24,6 @@ eureka:
 
 bank-entity:
   current-bank: bank-01
+
+kafka-listened-topics:
+  finished-transactions: transform-finished-transaction

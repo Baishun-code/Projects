@@ -83,6 +83,12 @@
       </if>
     </trim>
   </insert>
+    <update id="updateTransactionStatus">
+      update tf_transaction_info
+         set TX_STATUS = #{status}
+       where TX_STATUS = #{statusBefore}
+         and SERIAL_NO = #{serialNo}
+    </update>
 
     <select id="queryAllRecords" resultType="com.psp.entity.TfTransactionInfo">
       select * from tf_transaction_info
