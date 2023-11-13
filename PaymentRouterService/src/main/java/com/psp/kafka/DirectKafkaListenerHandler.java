@@ -1,5 +1,7 @@
 package com.psp.kafka;
 
+import com.psp.mapper.TfFinishedTransactionMapper;
+import com.psp.service.FinishedTransactionService;
 import com.psp.util.Util;
 import com.psp.entity.*;
 import com.psp.service.CacheService;
@@ -13,6 +15,7 @@ import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.concurrent.LinkedBlockingDeque;
 
 /**
@@ -26,19 +29,23 @@ public class DirectKafkaListenerHandler implements KafkaListenerHandler {
     private Thread[] workerQueue;
     private RestTemplate restTemplate;
     private CacheService cacheService;
+    private FinishedTransactionService mapper;
 
-    public DirectKafkaListenerHandler(int size, CacheService cacheService) {
+    public DirectKafkaListenerHandler(int size,
+                                      CacheService cacheService,
+                                      FinishedTransactionService mapper) {
         workerQueue = new Thread[size];
         queue = new LinkedBlockingDeque<>();
         restTemplate = new RestTemplate();
         this.cacheService = cacheService;
+        this.mapper = mapper;
         startWorker();
     }
 
     private void startWorker(){
         for (int i = 0; i < workerQueue.length; i++) {
             log.info("Start kafka worker thread {}",i);
-            workerQueue[i] = new Thread(new Worker(i, workerQueue, queue, restTemplate, cacheService));
+            workerQueue[i] = new Thread(new Worker(i, workerQueue, queue, restTemplate, cacheService, mapper));
             workerQueue[i].setName("Kafka-Worker-Thread-".concat(String.valueOf(i)));
         }
     }
@@ -56,12 +63,14 @@ public class DirectKafkaListenerHandler implements KafkaListenerHandler {
         private LinkedBlockingDeque<KafkaReceivedMessageWrapper> queue;
         private RestTemplate restTemplate;
         private CacheService cacheService;
+        private FinishedTransactionService mapper;
 
         public Worker(int workIndex,
                       Thread[] workerQueue,
                       LinkedBlockingDeque<KafkaReceivedMessageWrapper> queue,
                       RestTemplate restTemplate,
-                      CacheService cacheService) {
+                      CacheService cacheService,
+                      FinishedTransactionService mapper) {
             this.workIndex = workIndex;
             this.workerQueue = workerQueue;
             this.queue = queue;
@@ -78,7 +87,7 @@ public class DirectKafkaListenerHandler implements KafkaListenerHandler {
                 log.error(e.getMessage());
                 log.info("Start new thread");
                 workerQueue[workIndex] = new Thread(new Worker(workIndex,
-                        workerQueue, queue, restTemplate, cacheService));
+                        workerQueue, queue, restTemplate, cacheService, mapper));
                 workerQueue[workIndex].setName(Thread.currentThread().getName());
             }
         }
@@ -111,6 +120,11 @@ public class DirectKafkaListenerHandler implements KafkaListenerHandler {
                 if("200".equals(body.code)){
                     //if data is sent successfully, commit the message, if failed neglect the data
                     //for reprocessing
+                    TfFinishedTransaction tfFinishedTransaction =
+                            new TfFinishedTransaction(txTransactionInfo.getAcctId(), new Date());
+
+                    mapper.createNewFinishedTransac(tfFinishedTransaction);
+                    //if insert local storage successful, then ack the data
                     Acknowledgment acknowledgment = messageWrapper.getAcknowledgment();
                     acknowledgment.acknowledge();
                 }

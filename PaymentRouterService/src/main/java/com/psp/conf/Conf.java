@@ -2,7 +2,9 @@ package com.psp.conf;
 
 import com.psp.kafka.DatabaseKafkaListenerHandler;
 import com.psp.kafka.DirectKafkaListenerHandler;
+import com.psp.mapper.TfFinishedTransactionMapper;
 import com.psp.service.CacheService;
+import com.psp.service.FinishedTransactionService;
 import com.psp.service.KafkaListenerHandler;
 import com.psp.service.TxService;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +19,8 @@ public class Conf {
     private int threadCount;
 
     @Bean
-    public KafkaListenerHandler kafkaListenerHandler(CacheService cacheService){
-        return new DirectKafkaListenerHandler(threadCount, cacheService);
+    public KafkaListenerHandler kafkaListenerHandler(CacheService cacheService,
+                                                     FinishedTransactionService mapper){
+        return new DirectKafkaListenerHandler(threadCount, cacheService, mapper);
     }
 }

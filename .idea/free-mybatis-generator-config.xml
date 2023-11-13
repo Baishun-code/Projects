@@ -95,6 +95,30 @@
             </Config>
           </value>
         </entry>
+        <entry key="tf_finished_transaction">
+          <value>
+            <Config>
+              <option name="comment" value="true" />
+              <option name="daoMvnPath" value="src/main/java" />
+              <option name="daoName" value="TfFinishedTransactionMapper" />
+              <option name="daoPackage" value="com.psp.mapper" />
+              <option name="daoPostfix" value="Mapper" />
+              <option name="modelMvnPath" value="src/main/java" />
+              <option name="modelName" value="TfFinishedTransaction" />
+              <option name="modelPackage" value="com.psp.entity" />
+              <option name="name" value="tf_finished_transaction" />
+              <option name="overrideJava" value="true" />
+              <option name="overrideXML" value="true" />
+              <option name="primaryKey" value="" />
+              <option name="projectFolder" value="$PROJECT_DIR$" />
+              <option name="tableName" value="tf_finished_transaction" />
+              <option name="useLombokPlugin" value="true" />
+              <option name="useSchemaPrefix" value="true" />
+              <option name="xmlMvnPath" value="src/main/resources" />
+              <option name="xmlPackage" value="generator" />
+            </Config>
+          </value>
+        </entry>
         <entry key="tx_transaction_info">
           <value>
             <Config>
