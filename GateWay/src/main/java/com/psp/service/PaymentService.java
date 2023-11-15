@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(value = "service-payment", path = "v1")
+@FeignClient(value = "service-entity01", path = "v1")
 public interface PaymentService {
 
     @RequestMapping(value = "/transfer", method = RequestMethod.GET)

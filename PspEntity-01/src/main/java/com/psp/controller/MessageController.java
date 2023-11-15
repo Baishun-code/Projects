@@ -31,7 +31,7 @@ public class MessageController {
         return ResponseV0.success("return information", txData);
     }
 
-    @PostMapping("/cnacel")
+    @PostMapping("/cancel")
     public ResponseV0 cancelTxInfo(@RequestBody List<String> serialNums){
         try {
             for (String serialNum : serialNums) {

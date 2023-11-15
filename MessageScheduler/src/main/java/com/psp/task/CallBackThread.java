@@ -58,6 +58,9 @@ public class CallBackThread implements Runnable{
         //code would block
         String key = callBackMessages.take();
         log.info("Send back serial num {}", key);
+        if(key == null){
+            return;
+        }
         //get service name of the data
         String serName = map.get(key).getServiceName();
         //if mapList doesn't contain serName before

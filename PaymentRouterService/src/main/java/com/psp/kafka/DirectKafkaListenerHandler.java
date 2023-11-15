@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.support.Acknowledgment;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
@@ -47,6 +48,7 @@ public class DirectKafkaListenerHandler implements KafkaListenerHandler {
             log.info("Start kafka worker thread {}",i);
             workerQueue[i] = new Thread(new Worker(i, workerQueue, queue, restTemplate, cacheService, mapper));
             workerQueue[i].setName("Kafka-Worker-Thread-".concat(String.valueOf(i)));
+            workerQueue[i].start();
         }
     }
 
@@ -77,18 +79,21 @@ public class DirectKafkaListenerHandler implements KafkaListenerHandler {
             this.restTemplate = restTemplate;
             RUNNING = true;
             this.cacheService = cacheService;
+            this.mapper = mapper;
         }
 
         @Override
         public void run() {
-            try {
-                doSendMessage();
-            }catch (Exception e){
-                log.error(e.getMessage());
-                log.info("Start new thread");
-                workerQueue[workIndex] = new Thread(new Worker(workIndex,
-                        workerQueue, queue, restTemplate, cacheService, mapper));
-                workerQueue[workIndex].setName(Thread.currentThread().getName());
+            while(RUNNING){
+                try {
+                    doSendMessage();
+                }catch (Exception e){
+                    log.error(e.getMessage());
+                    log.info("Start new thread");
+                    workerQueue[workIndex] = new Thread(new Worker(workIndex,
+                            workerQueue, queue, restTemplate, cacheService, mapper));
+                    workerQueue[workIndex].setName(Thread.currentThread().getName());
+                }
             }
         }
 
@@ -97,6 +102,12 @@ public class DirectKafkaListenerHandler implements KafkaListenerHandler {
             //get original message
             TxTransactionInfo txTransactionInfo =
                     Util.decodeObj(messageWrapper.getMessage(), TxTransactionInfo.class);
+
+            //if the message is incomplete, remove the message from MQ
+            if(txTransactionInfo == null){
+                messageWrapper.getAcknowledgment().acknowledge();
+                return;
+            }
             //get bank id
             String targetAcctBank = txTransactionInfo.getTargetAcctBank();
             //get target bank info

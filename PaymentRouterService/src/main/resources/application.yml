@@ -48,3 +48,6 @@ kafka-listener-handler:
 
 bank-entity:
   current-bank: bank-01
+
+kafka-listened-topics:
+  transaction-router: payment-interbank-router

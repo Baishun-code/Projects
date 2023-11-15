@@ -77,7 +77,7 @@ public class FetchThread implements Runnable{
                         if(!map.contains(messageEntry.getKey())){
                             map.put(messageEntry.getKey(), messageWrapper);
                             //convert message object to JSON String
-                            String messageStr = Util.converObjectToJason(messageEntry.getKey());
+                            String messageStr = Util.converObjectToJason(messageEntry.getValue());
                             //commit to kafka in async mode, and add call back function
                             //for future process
                             ListenableFuture<SendResult<String, String>> send
@@ -87,6 +87,8 @@ public class FetchThread implements Runnable{
                         }
                     }
                 }else if(messMap.size() == 0 || messMap == null){
+                    //if nothing is collected through the interface,
+                    // do nothing
                   continue;
                 } else {
                     //if failed to fetch data, the messageWrapper will be put

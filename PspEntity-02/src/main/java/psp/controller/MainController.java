@@ -9,7 +9,6 @@ public class MainController {
 
     @RequestMapping("/test")
     public String Test(){
-
         return "test";
     }
 }

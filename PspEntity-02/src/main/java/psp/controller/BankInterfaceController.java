@@ -1,11 +1,9 @@
 package psp.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import psp.entity.ResponseV0;
 import psp.entity.TxTransactionInfo;
 import psp.service.MessageService;
@@ -15,6 +13,7 @@ import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/interbank")
+@Slf4j
 public class BankInterfaceController {
 
     @Autowired
@@ -23,8 +22,9 @@ public class BankInterfaceController {
     @Value("${kafka-listened-topics.transaction-from-other-banks}")
     private String transferTopic;
 
-    @RequestMapping(value = "/tranfer", method = RequestMethod.POST)
-    public ResponseV0 trnafer(@RequestBody String txTransactionInfo){
+    @PostMapping("/tranfer")
+    public ResponseV0 transfer(@RequestBody String txTransactionInfo){
+        log.info("Interbank transfering requests coming in ....");
         boolean received = false;
         try {
             messageService.sendTo(txTransactionInfo, transferTopic);
