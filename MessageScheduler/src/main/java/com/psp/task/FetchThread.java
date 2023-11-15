@@ -86,7 +86,9 @@ public class FetchThread implements Runnable{
                                     new FailCallBack(map, messageEntry.getKey()));
                         }
                     }
-                }else {
+                }else if(messMap.size() == 0 || messMap == null){
+                  continue;
+                } else {
                     //if failed to fetch data, the messageWrapper will be put
                     //back to messageObjs, so that it can be reprocessed
                     messageObjs.addFirst(messageWrapper);

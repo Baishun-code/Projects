@@ -4,7 +4,7 @@ server:
 
 spring:
   application:
-    name: service-payment
+    name: service-schedule
   datasource:
     username: root
     password: root
@@ -12,7 +12,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   task:
     scheduling:
-      corn: 0/1 * * * * *
+      corn: 0 0/1 * * * *
       pool:
         size: 1
   kafka:

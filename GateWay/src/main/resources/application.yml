@@ -4,7 +4,7 @@ server:
 
 spring:
   application:
-    name: gateway-service
+    name: service-gateway
   datasource:
     username: root
     password: root

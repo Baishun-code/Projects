@@ -1,10 +1,10 @@
 ##bank-branch01
 server:
-  port: 8001
+  port: 8200
 
 spring:
   application:
-    name: service-payment
+    name: service-entity02
   datasource:
     username: root
     password: root

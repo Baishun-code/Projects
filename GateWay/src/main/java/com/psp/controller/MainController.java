@@ -16,12 +16,6 @@ public class MainController {
     @Autowired
     private PaymentService paymentService;
 
-    @RequestMapping("/test")
-    public ResponseV0 test(){
-        ResponseV0 responseV0 = paymentService.test();
-        return responseV0;
-    }
-
     @RequestMapping("/deposit")
     public ResponseV0 deposit(@RequestParam("amt") double amt,
                                  @RequestParam("currency") String currency,
@@ -50,6 +44,7 @@ public class MainController {
         return responseV0;
     }
 
+    @RequestMapping("/transfer")
     public ResponseV0 transferTo(@RequestParam("amt") double amt,
                                  @RequestParam("currency") String currency,
                                  @RequestParam("acctId") String acctId,
