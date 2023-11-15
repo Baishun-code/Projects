@@ -19,7 +19,8 @@ public class BankInterfaceController {
 
     @Autowired
     private MessageService messageService;
-    @Value("")
+
+    @Value("${kafka-listened-topics.transaction-from-other-banks}")
     private String transferTopic;
 
     @RequestMapping(value = "/tranfer", method = RequestMethod.POST)
