@@ -1,6 +1,6 @@
-##bank-branch01
+##notification service
 server:
-  port: 8010
+  port: 8200
 
 spring:
   application:
@@ -34,13 +34,8 @@ mybatis:
 
 kafka-listener-handler:
   worker-threads: 1
-#No need to access service information
-#because all communications are done through MQ-Kafka,
-#besides when interacting with other banks, precise ip-port
-#is in the database
 
-##since the finished transactions needed to be collected to schedule service,
-##eureka is needed in the process
+
 eureka:
   client:
     service-url:

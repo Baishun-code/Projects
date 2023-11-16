@@ -61,14 +61,29 @@ public class FetchManagerService implements FetchManger{
     public void pollFromService(){
         //all services need data transformation
         List<TdTxService> tdTxServices = scheduleNameService.getAllFetchTdTx();
+        // a temporary map used to store service, since a service name - service number
+        // pair has two records, so they need to be stored into a map, once completed
+        // the pair is sent to messageObjs
         Map<String, MessageWrapper> curMessageMap = new HashMap<>();
         for (int i = 0; i < tdTxServices.size(); i++) {
             TdTxService tdTxService = tdTxServices.get(i);
+
+            //special url only for ribbon
+            //http://service-name/request-path
             String url =
                     Util.assembleUrl(tdTxService.getSerName(), tdTxService.getReqUri());
-            if(!curMessageMap.containsKey(tdTxService.getSerName())){
+
+            //newly made service name used as map key
+            //because one service might have multiple tables whose
+            //data needed to be sent to MQ
+            String serviceNameKey = tdTxService.getSerName()
+                    .concat("-")
+                    .concat(String.valueOf(tdTxService.getSerNo()));
+
+
+            if(!curMessageMap.containsKey(serviceNameKey)){
                 curMessageMap.put(tdTxService.getSerName(),
-                        new MessageWrapper(tdTxService.getTopic(), tdTxService.getSerName()));
+                        new MessageWrapper(serviceNameKey, tdTxService.getSerName()));
             }
 
             MessageWrapper messageWrapper = curMessageMap.get(tdTxService.getSerName());

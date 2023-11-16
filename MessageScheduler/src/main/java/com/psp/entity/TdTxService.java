@@ -22,6 +22,8 @@ public class TdTxService implements Serializable {
 
     private Date updateDt;
 
+    private int serNo;
+
     private static final long serialVersionUID = 1L;
 
     public String getSerName() {
@@ -78,5 +80,13 @@ public class TdTxService implements Serializable {
 
     public void setUpdateDt(Date updateDt) {
         this.updateDt = updateDt;
+    }
+
+    public int getSerNo() {
+        return serNo;
+    }
+
+    public void setSerNo(int serNo) {
+        this.serNo = serNo;
     }
 }
