@@ -8,8 +8,8 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 @SpringBootApplication
 @MapperScan("com.psp.mapper")
 @EnableEurekaClient
-public class PspApplication {
+public class PspEntityOneApplication {
     public static void main(String[] args) {
-        SpringApplication.run(PspApplication.class, args);
+        SpringApplication.run(PspEntityOneApplication.class, args);
     }
 }

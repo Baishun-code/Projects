@@ -68,7 +68,7 @@
     </trim>
   </insert>
 
-  <select id="queryBankInfo" resultType="com.psp.mapper.TdBankMessageInfoMapper">
+  <select id="queryBankInfo" resultMap="BaseResultMap">
     select *
       from TD_BANK_MESSAGE_INFO
      where BANK_ID = #{bankId}

@@ -1,6 +1,7 @@
 package com.psp.kafka;
 
 import com.psp.mapper.TfFinishedTransactionMapper;
+import com.psp.service.BankInfoService;
 import com.psp.service.FinishedTransactionService;
 import com.psp.util.Util;
 import com.psp.entity.*;
@@ -31,22 +32,25 @@ public class DirectKafkaListenerHandler implements KafkaListenerHandler {
     private RestTemplate restTemplate;
     private CacheService cacheService;
     private FinishedTransactionService mapper;
+    private BankInfoService bankInfoService;
 
     public DirectKafkaListenerHandler(int size,
                                       CacheService cacheService,
-                                      FinishedTransactionService mapper) {
+                                      FinishedTransactionService mapper,
+                                      BankInfoService bankInfoService) {
         workerQueue = new Thread[size];
         queue = new LinkedBlockingDeque<>();
         restTemplate = new RestTemplate();
         this.cacheService = cacheService;
         this.mapper = mapper;
+        this.bankInfoService = bankInfoService;
         startWorker();
     }
 
     private void startWorker(){
         for (int i = 0; i < workerQueue.length; i++) {
             log.info("Start kafka worker thread {}",i);
-            workerQueue[i] = new Thread(new Worker(i, workerQueue, queue, restTemplate, cacheService, mapper));
+            workerQueue[i] = new Thread(new Worker(i, workerQueue, queue, restTemplate, cacheService, mapper, bankInfoService));
             workerQueue[i].setName("Kafka-Worker-Thread-".concat(String.valueOf(i)));
             workerQueue[i].start();
         }
@@ -66,13 +70,15 @@ public class DirectKafkaListenerHandler implements KafkaListenerHandler {
         private RestTemplate restTemplate;
         private CacheService cacheService;
         private FinishedTransactionService mapper;
+        private BankInfoService bankInfoService;
 
         public Worker(int workIndex,
                       Thread[] workerQueue,
                       LinkedBlockingDeque<KafkaReceivedMessageWrapper> queue,
                       RestTemplate restTemplate,
                       CacheService cacheService,
-                      FinishedTransactionService mapper) {
+                      FinishedTransactionService mapper,
+                      BankInfoService bankInfoService) {
             this.workIndex = workIndex;
             this.workerQueue = workerQueue;
             this.queue = queue;
@@ -80,6 +86,7 @@ public class DirectKafkaListenerHandler implements KafkaListenerHandler {
             RUNNING = true;
             this.cacheService = cacheService;
             this.mapper = mapper;
+            this.bankInfoService = bankInfoService;
         }
 
         @Override
@@ -91,7 +98,7 @@ public class DirectKafkaListenerHandler implements KafkaListenerHandler {
                     log.error(e.getMessage());
                     log.info("Start new thread");
                     workerQueue[workIndex] = new Thread(new Worker(workIndex,
-                            workerQueue, queue, restTemplate, cacheService, mapper));
+                            workerQueue, queue, restTemplate, cacheService, mapper, bankInfoService));
                     workerQueue[workIndex].setName(Thread.currentThread().getName());
                 }
             }
@@ -114,6 +121,12 @@ public class DirectKafkaListenerHandler implements KafkaListenerHandler {
             TdBankMessageInfo tdBankMessageInfo =
                     (TdBankMessageInfo) cacheService.get(targetAcctBank);
 
+            //if there is no record in cache, get from database directly
+            if(tdBankMessageInfo == null){
+                tdBankMessageInfo = bankInfoService.queryBankInfo(targetAcctBank);
+                cacheService.put(targetAcctBank, tdBankMessageInfo);
+            }
+
             //bank information
             String ip = tdBankMessageInfo.getBankIp();
             String port = tdBankMessageInfo.getBankPort();
@@ -132,12 +145,13 @@ public class DirectKafkaListenerHandler implements KafkaListenerHandler {
                     //if data is sent successfully, commit the message, if failed neglect the data
                     //for reprocessing
                     TfFinishedTransaction tfFinishedTransaction =
-                            new TfFinishedTransaction(txTransactionInfo.getAcctId(), new Date());
+                            new TfFinishedTransaction(txTransactionInfo.getSerialNo(), new Date());
 
                     mapper.createNewFinishedTransac(tfFinishedTransaction);
                     //if insert local storage successful, then ack the data
                     Acknowledgment acknowledgment = messageWrapper.getAcknowledgment();
                     acknowledgment.acknowledge();
+                    log.info("Message sent successfully ...");
                 }
             }catch (Exception e){
                 log.error(e.getMessage());

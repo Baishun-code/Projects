@@ -39,12 +39,14 @@ kafka-listener-handler:
 #besides when interacting with other banks, precise ip-port
 #is in the database
 
-#eureka:
-#  client:
-#    service-url:
-#      defaultZone: http://localhost:8761/eureka
-#    fetch-registry: true
-#    register-with-eureka: true
+##since the finished transactions needed to be collected to schedule service,
+##eureka is needed in the process
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    fetch-registry: false #No need to fetch other instances
+    register-with-eureka: true
 
 bank-entity:
   current-bank: bank-01

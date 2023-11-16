@@ -6,6 +6,8 @@ import com.psp.service.TransactionInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class TransactionInfoServiceImpl implements TransactionInfoService {
 
@@ -29,7 +31,7 @@ public class TransactionInfoServiceImpl implements TransactionInfoService {
      * for one time
      */
     @Override
-    public void changeTransactionState(String serialNo, String statusBefore, String status) {
-        tfTransactionInfomMapper.updateTransactionStatus(serialNo, statusBefore, status);
+    public void changeTransactionState(String serialNo, String statusBefore, String status, Date finishTime) {
+        tfTransactionInfomMapper.updateTransactionStatus(serialNo, statusBefore, status, finishTime);
     }
 }

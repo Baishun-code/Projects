@@ -85,7 +85,8 @@
   </insert>
     <update id="updateTransactionStatus">
       update tf_transaction_info
-         set TX_STATUS = #{status}
+         set TX_STATUS = #{status},
+             END_DT = #{finshTime}
        where TX_STATUS = #{statusBefore}
          and SERIAL_NO = #{serialNo}
     </update>

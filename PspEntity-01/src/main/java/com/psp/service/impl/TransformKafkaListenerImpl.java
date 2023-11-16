@@ -36,7 +36,8 @@ public class TransformKafkaListenerImpl implements TransformKafkaListener {
 
             transactionInfoService.changeTransactionState(tfFinishedTransaction.getSerialNo(),
                     TxStatus.TRANSFERING.code,
-                    TxStatus.FINISHED.code);
+                    TxStatus.FINISHED.code,
+                    tfFinishedTransaction.getInsertDt());
 
             //ack the message after updating database
             acknowledgment.acknowledge();

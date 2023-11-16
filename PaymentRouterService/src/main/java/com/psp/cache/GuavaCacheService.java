@@ -15,12 +15,13 @@ public class GuavaCacheService implements CacheService {
 
     private AtomicBoolean valid;
 
-    @Autowired
     private BankInfoService bankInfoService;
 
     private Cache<String, Object> cache;
 
-    public GuavaCacheService() {
+    @Autowired
+    public GuavaCacheService(BankInfoService bankInfoService) {
+        this.bankInfoService = bankInfoService;
         valid = new AtomicBoolean();
         valid.set(true);
         CacheBuilder<Object, Object> cacheBuilder = CacheBuilder.newBuilder();

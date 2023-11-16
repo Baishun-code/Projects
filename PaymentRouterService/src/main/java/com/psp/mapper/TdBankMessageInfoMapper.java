@@ -8,5 +8,5 @@ public interface TdBankMessageInfoMapper {
 
     int insertSelective(TdBankMessageInfo record);
 
-    TdBankMessageInfoMapper queryBankInfo(@Param("bankId")String bankId);
+    TdBankMessageInfo queryBankInfo(@Param("bankId")String bankId);
 }

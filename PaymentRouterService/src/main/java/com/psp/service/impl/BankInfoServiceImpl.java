@@ -14,6 +14,6 @@ public class BankInfoServiceImpl implements BankInfoService {
 
     @Override
     public TdBankMessageInfo queryBankInfo(String bankId) {
-        return null;
+        return tdBankMessageInfoMapper.queryBankInfo(bankId);
     }
 }

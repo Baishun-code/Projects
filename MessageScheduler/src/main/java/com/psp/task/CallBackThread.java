@@ -13,6 +13,11 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 import static com.psp.util.Util.assembleUrl;
 
+/**
+ * cancel message from its original service, if the message is sent to MQ,
+ * then cancel the message from tx tables, the original service MUST
+ * provide post interface accept List<String>, the String is the indicator
+ */
 @Slf4j
 public class CallBackThread implements Runnable{
 

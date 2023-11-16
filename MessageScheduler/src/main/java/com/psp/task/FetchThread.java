@@ -16,6 +16,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingDeque;
 
+/**
+ * Fetch message objects from other services, other services MUST return
+ * the data in the form of Map<String, Object>, string is the key indicator
+ * of the record, the Object can be uniquely defined by record
+ */
 @Slf4j
 public class FetchThread implements Runnable{
 
@@ -47,6 +52,7 @@ public class FetchThread implements Runnable{
         try {
             while (RUNNING){
                 MessageWrapper messageWrapper = messageObjs.take();
+                //neglect null message
                 if(messageWrapper == null){
                     continue;
                 }
@@ -60,6 +66,7 @@ public class FetchThread implements Runnable{
                     log.error(e.getMessage());
                 }
 
+                //unable to handle failed message
                 if(forEntity == null){
                     continue;
                 }

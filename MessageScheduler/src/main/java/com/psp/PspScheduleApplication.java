@@ -10,8 +10,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @MapperScan("com.psp.mapper")
 @EnableScheduling
 @EnableEurekaClient
-public class PspApplication {
+public class PspScheduleApplication {
     public static void main(String[] args) {
-        SpringApplication.run(PspApplication.class, args);
+        SpringApplication.run(PspScheduleApplication.class, args);
     }
 }
