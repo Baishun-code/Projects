@@ -16,6 +16,7 @@
         <module>PspEntity-0102</module>
         <module>MessageScheduler</module>
         <module>PaymentRouterService</module>
+        <module>NotificationService</module>
     </modules>
 
     <properties>

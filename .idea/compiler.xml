@@ -12,6 +12,7 @@
         <module name="PspEntity-02" />
         <module name="PspEntity-0102" />
         <module name="GateWay" />
+        <module name="NotificationService" />
         <module name="PaymentRouterService" />
         <module name="MessageScheduler" />
       </profile>
@@ -22,6 +23,7 @@
       <module name="EurekaServer" options="-parameters" />
       <module name="GateWay" options="-parameters" />
       <module name="MessageScheduler" options="-parameters" />
+      <module name="NotificationService" options="-parameters" />
       <module name="PaymentRouterService" options="-parameters" />
       <module name="PspEntity-01" options="-parameters" />
       <module name="PspEntity-0102" options="-parameters" />
