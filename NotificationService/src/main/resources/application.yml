@@ -35,7 +35,6 @@ mybatis:
 kafka-listener-handler:
   worker-threads: 1
 
-
 eureka:
   client:
     service-url:

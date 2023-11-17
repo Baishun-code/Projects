@@ -56,6 +56,7 @@ public class FetchThread implements Runnable{
                 if(messageWrapper == null){
                     continue;
                 }
+
                 //fetch data in sync mode
                 log.info("Fetching data through url: {}", messageWrapper.reqUrl);
                 ResponseEntity<ResponseV0> forEntity = null;

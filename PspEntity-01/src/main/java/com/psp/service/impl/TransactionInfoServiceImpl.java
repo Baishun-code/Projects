@@ -34,4 +34,9 @@ public class TransactionInfoServiceImpl implements TransactionInfoService {
     public void changeTransactionState(String serialNo, String statusBefore, String status, Date finishTime) {
         tfTransactionInfomMapper.updateTransactionStatus(serialNo, statusBefore, status, finishTime);
     }
+
+    @Override
+    public TfTransactionInfo getTransactionBySerialNo(String serialNo) {
+        return tfTransactionInfomMapper.queryTransactionBySerialNo(serialNo);
+    }
 }

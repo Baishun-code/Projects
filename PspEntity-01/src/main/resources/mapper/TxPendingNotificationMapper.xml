@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.psp.mapper.TxPendingNotificationMapper">
+  <resultMap id="BaseResultMap" type="com.psp.entity.TxPendingNotification">
+    <result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+    <result column="ACCT_ID" jdbcType="VARCHAR" property="acctId" />
+    <result column="NOTI_TYPE" jdbcType="VARCHAR" property="notiType" />
+    <result column="CONTENT" jdbcType="VARCHAR" property="content" />
+    <result column="NOTI_STATUS" jdbcType="VARCHAR" property="notiStatus" />
+    <result column="INSERT_DT" jdbcType="DATE" property="insertDt" />
+    <result column="SERIAL_NO" jdbcType="INT" property="serialNo" />
+  </resultMap>
+  <insert id="insert" parameterType="com.psp.entity.TxPendingNotification">
+    insert into tx_pending_notification (USER_ID, ACCT_ID, NOTI_TYPE, 
+      CONTENT, NOTI_STATUS, INSERT_DT, SERIAL_NO
+      )
+    values (#{userId,jdbcType=VARCHAR}, #{acctId,jdbcType=VARCHAR}, #{notiType,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{notiStatus,jdbcType=VARCHAR}, #{insertDt,jdbcType=DATE},
+            #{serialNo, jdbcType=INT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.psp.entity.TxPendingNotification">
+    insert into tx_pending_notification
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        USER_ID,
+      </if>
+      <if test="acctId != null">
+        ACCT_ID,
+      </if>
+      <if test="notiType != null">
+        NOTI_TYPE,
+      </if>
+      <if test="content != null">
+        CONTENT,
+      </if>
+      <if test="notiStatus != null">
+        NOTI_STATUS,
+      </if>
+      <if test="insertDt != null">
+        INSERT_DT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="acctId != null">
+        #{acctId,jdbcType=VARCHAR},
+      </if>
+      <if test="notiType != null">
+        #{notiType,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="notiStatus != null">
+        #{notiStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="insertDt != null">
+        #{insertDt,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+
+  <delete id="deleteFinishedMessage">
+    delete
+      from TX_PENDING_NOTIFICATION
+     where SERIAL_NO = #{serialNo}
+  </delete>
+
+  <select id="queryAllPendingMessage" resultMap="BaseResultMap">
+    select *
+      from TX_PENDING_NOTIFICATION
+  </select>
+</mapper>

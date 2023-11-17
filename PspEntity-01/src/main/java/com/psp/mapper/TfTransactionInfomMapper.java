@@ -17,4 +17,6 @@ public interface TfTransactionInfomMapper {
                                  @Param("statusBefore") String statusBefore,
                                  @Param("status")String status,
                                  @Param("finshTime")Date finshTime);
+
+    TfTransactionInfo queryTransactionBySerialNo(@Param("serialNo") String serialNo);
 }
