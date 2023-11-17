@@ -1,6 +1,5 @@
 package com.psp.kafka;
 
-import com.psp.entity.TdUserContactInfo;
 import com.psp.entity.TfReceivedNotification;
 import com.psp.service.KafkaListenerHandler;
 import com.psp.service.ReceivedNotificationService;
@@ -8,6 +7,7 @@ import com.psp.service.UserInfoService;
 import com.psp.util.Util;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.support.Acknowledgment;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.concurrent.LinkedBlockingDeque;

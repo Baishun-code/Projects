@@ -1,7 +1,6 @@
 package com.psp.task;
 
 import com.psp.entity.EmailMessage;
-import com.psp.entity.NotificationMessage;
 import com.psp.entity.TdUserContactInfo;
 import com.psp.entity.TfReceivedNotification;
 import com.psp.message.MailSender;
@@ -10,7 +9,6 @@ import com.psp.service.ReceivedNotificationService;
 import com.psp.service.UserInfoService;
 
 import java.util.HashSet;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
