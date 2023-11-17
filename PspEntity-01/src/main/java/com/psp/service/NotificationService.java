@@ -10,5 +10,5 @@ public interface NotificationService {
 
     List<TxPendingNotification> pollAllPendingMessage();
 
-    void cancelMessage(String serialNo);
+    void cancelMessage(Integer serialNo);
 }

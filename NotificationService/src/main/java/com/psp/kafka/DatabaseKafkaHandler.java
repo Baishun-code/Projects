@@ -1,10 +1,15 @@
 package com.psp.kafka;
 
+import com.psp.entity.TdUserContactInfo;
+import com.psp.entity.TfReceivedNotification;
 import com.psp.service.KafkaListenerHandler;
 import com.psp.service.ReceivedNotificationService;
+import com.psp.service.UserInfoService;
 import com.psp.util.Util;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.support.Acknowledgment;
+
+import java.util.Date;
 import java.util.concurrent.LinkedBlockingDeque;
 
 @Slf4j
@@ -12,23 +17,27 @@ public class DatabaseKafkaHandler implements KafkaListenerHandler {
 
     private LinkedBlockingDeque<MessageWrapper> messageQueue;
     private ReceivedNotificationService receivedNotificationService;
+    private UserInfoService userInfoService;
     private Thread[] works;
     private int workerSize;
     private boolean RUNNING;
 
     public DatabaseKafkaHandler(ReceivedNotificationService receivedNotificationService,
-                                int workerSize){
+                                int workerSize,
+                                UserInfoService userInfoService){
         messageQueue = new LinkedBlockingDeque<>();
         this.receivedNotificationService = receivedNotificationService;
         this.workerSize = workerSize;
         RUNNING = true;
         works = new Thread[workerSize];
+        this.userInfoService = userInfoService;
         startWorkers();
     }
 
     private void startWorkers(){
         for (int i = 0; i < works.length; i++) {
-            works[i] = new Thread(new Worker(messageQueue, receivedNotificationService, works, i));
+            works[i] = new Thread(new Worker(messageQueue, receivedNotificationService,
+                    works, i, userInfoService));
             works[i].setName("Kafka-listener-worker-thread-".concat(String.valueOf(i)));
             works[i].start();
         }
@@ -42,6 +51,7 @@ public class DatabaseKafkaHandler implements KafkaListenerHandler {
     static class Worker implements Runnable{
         private LinkedBlockingDeque<MessageWrapper> messageQueue;
         private ReceivedNotificationService receivedNotificationService;
+        private UserInfoService userInfoService;
         private Thread[] works;
         private int workerIndex;
         private boolean RUNNING;
@@ -49,11 +59,13 @@ public class DatabaseKafkaHandler implements KafkaListenerHandler {
         public Worker(LinkedBlockingDeque<MessageWrapper> messageQueue,
                       ReceivedNotificationService receivedNotificationService,
                       Thread[] works,
-                      int workerIndex) {
+                      int workerIndex,
+                      UserInfoService userInfoService) {
             this.messageQueue = messageQueue;
             this.receivedNotificationService = receivedNotificationService;
             this.works = works;
             this.workerIndex = workerIndex;
+            this.userInfoService = userInfoService;
         }
 
         @Override
@@ -76,6 +88,12 @@ public class DatabaseKafkaHandler implements KafkaListenerHandler {
             TfReceivedNotification tfReceivedNotification =
                     Util.decodeObj(message.getMessageBody(), TfReceivedNotification.class);
 
+//            String userId = tfReceivedNotification.getUserId();
+//            String type = tfReceivedNotification.getNotiType();
+//            TdUserContactInfo userInfo = userInfoService.getUserInfo(userId, type);
+
+            tfReceivedNotification.setNotiStatus("0");
+            tfReceivedNotification.setInsertDt(new Date());
 
             //(3) try writing it into database
             receivedNotificationService.writeNotificationRecord(tfReceivedNotification);

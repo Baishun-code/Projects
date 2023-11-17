@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.psp.mapper.TdUserContactInfoMapper">
+  <resultMap id="BaseResultMap" type="com.psp.entity.TdUserContactInfo">
+    <result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+    <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+    <result column="CONTACT_TYPE" jdbcType="VARCHAR" property="contactType" />
+    <result column="INFO_DETAIL" jdbcType="VARCHAR" property="infoDetail" />
+  </resultMap>
+  <insert id="insert" parameterType="com.psp.entity.TdUserContactInfo">
+    insert into td_user_contact_info (USER_ID, USER_NAME, CONTACT_TYPE, 
+      INFO_DETAIL)
+    values (#{userId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{contactType,jdbcType=VARCHAR}, 
+      #{infoDetail,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.psp.entity.TdUserContactInfo">
+    insert into td_user_contact_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        USER_ID,
+      </if>
+      <if test="userName != null">
+        USER_NAME,
+      </if>
+      <if test="contactType != null">
+        CONTACT_TYPE,
+      </if>
+      <if test="infoDetail != null">
+        INFO_DETAIL,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactType != null">
+        #{contactType,jdbcType=VARCHAR},
+      </if>
+      <if test="infoDetail != null">
+        #{infoDetail,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="queryUserInfoByUserId" resultType="com.psp.entity.TdUserContactInfo">
+    select *
+      from td_user_contact_info
+     where USER_ID = #{userId}
+       and CONTACT_TYPE = #{type}
+  </select>
+</mapper>

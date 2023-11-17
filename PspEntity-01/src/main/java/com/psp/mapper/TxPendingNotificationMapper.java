@@ -12,5 +12,5 @@ public interface TxPendingNotificationMapper {
 
     List<TxPendingNotification> queryAllPendingMessage();
 
-    void deleteFinishedMessage(@Param("serialNo") String serialNo);
+    void deleteFinishedMessage(@Param("serialNo") Integer serialNo);
 }

@@ -1,5 +1,7 @@
 package com.psp.service.impl;
 
+import com.psp.entity.TfReceivedNotification;
+import com.psp.mapper.TfReceivedNotificationMapper;
 import com.psp.service.ReceivedNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,12 +23,12 @@ public class ReceivedNotificationServiceImpl implements ReceivedNotificationServ
 
     @Override
     public List<TfReceivedNotification> getAllPendingNotifications() {
-        return null;
+        return tfReceivedNotificationMapper.queryAllPendingMessage();
     }
 
     @Override
-    public void cancelNotification(String serialNo) {
-
+    public void cancelNotification(Integer serialNo) {
+        tfReceivedNotificationMapper.cancelPendingMessage(serialNo);
     }
 
     @Override

@@ -82,11 +82,11 @@ public class FetchManagerService implements FetchManger{
 
 
             if(!curMessageMap.containsKey(serviceNameKey)){
-                curMessageMap.put(tdTxService.getSerName(),
-                        new MessageWrapper(serviceNameKey, tdTxService.getSerName()));
+                curMessageMap.put(serviceNameKey,
+                        new MessageWrapper(tdTxService.getTopic(), tdTxService.getSerName()));
             }
 
-            MessageWrapper messageWrapper = curMessageMap.get(tdTxService.getSerName());
+            MessageWrapper messageWrapper = curMessageMap.get(serviceNameKey);
             // 0 means this is collect url
             if("0".equals(tdTxService.getInterfaceType())){
                 messageWrapper.setReqUrl(url);

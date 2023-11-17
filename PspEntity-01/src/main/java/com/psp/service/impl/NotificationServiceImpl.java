@@ -25,7 +25,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void cancelMessage(String serialNo) {
+    public void cancelMessage(Integer serialNo) {
         txPendingNotificationMapper.deleteFinishedMessage(serialNo);
     }
 }

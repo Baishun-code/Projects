@@ -11,6 +11,8 @@ import java.util.Date;
  */
 @Data
 public class TfReceivedNotification implements Serializable {
+    private int serialNo;
+
     private String userId;
 
     private String acctId;

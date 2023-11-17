@@ -24,15 +24,7 @@ import java.util.Map;
 public class MainController {
 
     @Autowired
-    private MessageServiceImpl messageService;
-    @Autowired
     private PaymentService paymentService;
-
-    @RequestMapping("/getTxdata")
-    public ResponseV0 getAllTxData(){
-        Map<String, TxTransactionInfo> txData = messageService.getTxData();
-        return ResponseV0.success(txData);
-    }
 
     @RequestMapping("/transfer")
     public ResponseV0 transfer(@RequestParam("amt") double amt,
@@ -92,11 +84,4 @@ public class MainController {
         }
         return ResponseV0.success("Successfully to account");
     }
-
-    @RequestMapping("/test")
-    public ResponseV0 test(){
-        return ResponseV0.success("test", "test");
-    }
-
-
 }

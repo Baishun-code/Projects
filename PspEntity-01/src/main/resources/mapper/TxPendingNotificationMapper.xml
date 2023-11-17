@@ -8,7 +8,7 @@
     <result column="CONTENT" jdbcType="VARCHAR" property="content" />
     <result column="NOTI_STATUS" jdbcType="VARCHAR" property="notiStatus" />
     <result column="INSERT_DT" jdbcType="DATE" property="insertDt" />
-    <result column="SERIAL_NO" jdbcType="INT" property="serialNo" />
+    <result column="SERIAL_NO" jdbcType="INTEGER" property="serialNo" />
   </resultMap>
   <insert id="insert" parameterType="com.psp.entity.TxPendingNotification">
     insert into tx_pending_notification (USER_ID, ACCT_ID, NOTI_TYPE, 
@@ -16,7 +16,7 @@
       )
     values (#{userId,jdbcType=VARCHAR}, #{acctId,jdbcType=VARCHAR}, #{notiType,jdbcType=VARCHAR}, 
       #{content,jdbcType=VARCHAR}, #{notiStatus,jdbcType=VARCHAR}, #{insertDt,jdbcType=DATE},
-            #{serialNo, jdbcType=INT}
+            #{serialNo,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.psp.entity.TxPendingNotification">

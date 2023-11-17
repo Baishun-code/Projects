@@ -47,3 +47,12 @@ bank-entity:
 
 kafka-listened-topics:
   notification: bank-notification
+
+mail-sender:
+  username: 2465670863@qq.com
+  password: ctitrdjrgmvnecac
+  host: smtp.qq.com
+
+tasks:
+  core-pool-size: 1
+  cron-expression: 0 0/1 * * * *

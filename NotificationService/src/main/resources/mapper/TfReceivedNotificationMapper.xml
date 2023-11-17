@@ -8,13 +8,16 @@
     <result column="CONTENT" jdbcType="VARCHAR" property="content" />
     <result column="NOTI_STATUS" jdbcType="VARCHAR" property="notiStatus" />
     <result column="INSERT_DT" jdbcType="DATE" property="insertDt" />
+    <result column="SERIAL_NO" jdbcType="INTEGER" property="serialNo" />
+
   </resultMap>
   <insert id="insert" parameterType="com.psp.entity.TfReceivedNotification">
     insert into tf_received_notification (USER_ID, ACCT_ID, NOTI_TYPE, 
-      CONTENT, NOTI_STATUS, INSERT_DT
+      CONTENT, NOTI_STATUS, INSERT_DT, SERIAL_NO
       )
     values (#{userId,jdbcType=VARCHAR}, #{acctId,jdbcType=VARCHAR}, #{notiType,jdbcType=VARCHAR}, 
-      #{content,jdbcType=VARCHAR}, #{notiStatus,jdbcType=VARCHAR}, #{insertDt,jdbcType=DATE}
+      #{content,jdbcType=VARCHAR}, #{notiStatus,jdbcType=VARCHAR}, #{insertDt,jdbcType=DATE},
+            #{serialNo,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.psp.entity.TfReceivedNotification">
@@ -60,4 +63,15 @@
       </if>
     </trim>
   </insert>
+  <delete id="cancelPendingMessage">
+    update tf_received_notification
+       set NOTI_STATUS = "1"
+     where SERIAL_NO = #{serialNo}
+  </delete>
+
+  <select id="queryAllPendingMessage" resultMap="BaseResultMap">
+    select *
+      from tf_received_notification
+     where NOTI_STATUS = "0"
+  </select>
 </mapper>
