@@ -6,8 +6,10 @@ import com.psp.entity.TfTransactionInfo;
 import com.psp.entity.TxTransactionInfo;
 import com.psp.mapper.TxTransactionInfoMapper;
 import com.psp.service.PaymentService;
+import com.psp.service.TransactionInfoService;
 import com.psp.service.impl.MessageServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +27,8 @@ public class MainController {
 
     @Autowired
     private PaymentService paymentService;
+    @Autowired
+    private TransactionInfoService transactionInfoService;
 
     @RequestMapping("/transfer")
     public ResponseV0 transfer(@RequestParam("amt") double amt,
@@ -83,5 +87,17 @@ public class MainController {
             return ResponseV0.fail(e.getMessage());
         }
         return ResponseV0.success("Successfully to account");
+    }
+
+    @RequestMapping("/transaction")
+    public ResponseV0 queryTransaction(@RequestParam("serialNo") String serialNo){
+        try {
+            TfTransactionInfo transactionBySerialNo =
+                    transactionInfoService.getTransactionBySerialNo(serialNo);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return ResponseV0.fail("Unable to fetch");
+        }
+        return ResponseV0.success("success", transactionInfoService);
     }
 }

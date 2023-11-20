@@ -21,6 +21,10 @@ public class MailSender {
         //properties.setProperty("mail.smtp.ssl.enable", "true");
         properties.setProperty("mail.smtp.port", "465");
         properties.setProperty("mail.smtp.socketFactory.port", "465");
+        properties.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        properties.put("mail.smtp.ssl.enable", true);
+        //设置安全证书
+        properties.put("mail.smtp.ssl.protocols", "TLSv1.2");
         //create smtp session with authentication information
         session = Session.getDefaultInstance(properties, new Authenticator() {
             @Override

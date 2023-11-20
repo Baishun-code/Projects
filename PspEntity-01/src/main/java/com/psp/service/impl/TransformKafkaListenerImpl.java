@@ -68,6 +68,8 @@ public class TransformKafkaListenerImpl implements TransformKafkaListener {
         String acctId = transactionBySerialNo.getAcctId();
         String amt = String.valueOf(transactionBySerialNo.getAmt());
         txPendingNotification.setContent(amt);
+        //send e-mail by default
+        txPendingNotification.setNotiType("0");
         txPendingNotification.setAcctId(acctId);
         notificationService.createNewPendingMessage(txPendingNotification);
     }

@@ -89,23 +89,31 @@ public class BasicMessageHandler implements MessageSendingHandler {
         @Override
         public void run() {
             try {
-                //(1) get user information and notification content
-                String userId = tfReceivedNotification.getUserId();
-                String type = tfReceivedNotification.getNotiType();
-                TdUserContactInfo userInfo = userInfoService.getUserInfo(userId, type);
-                //(2) create message use messageFactory
-                EmailMessage emailMessage =
-                        (EmailMessage) messageFactory.buildMessage(tfReceivedNotification, userInfo);
-                //(3) send message
-                String[] targetEmail = new String[]{userInfo.getInfoDetail()};
-                mailSender.sendMessage(targetEmail, emailMessage.getSubject(), emailMessage.getText());
-                //(4) cancel the message from database
-                receivedNotificationService.cancelNotification(tfReceivedNotification.getSerialNo());
-                //(5) removing the message from on handling messages queue to free space
-                onHandlingMessages.remove(tfReceivedNotification.getSerialNo());
+                doWork();
             }catch (Exception e){
                 e.getMessage();
             }
+        }
+
+        private void doWork(){
+            //(1) get user information and notification content
+            String userId = tfReceivedNotification.getAcctId();
+            String type = tfReceivedNotification.getNotiType();
+//            //send e-mail by default
+//            if(type == null){
+//                type = "0";
+//            }
+            TdUserContactInfo userInfo = userInfoService.getUserInfo(userId, type);
+            //(2) create message use messageFactory
+            EmailMessage emailMessage =
+                    (EmailMessage) messageFactory.buildMessage(tfReceivedNotification, userInfo);
+            //(3) send message
+            String[] targetEmail = new String[]{userInfo.getInfoDetail()};
+            mailSender.sendMessage(targetEmail, emailMessage.getSubject(), emailMessage.getText());
+            //(4) cancel the message from database
+            receivedNotificationService.cancelNotification(tfReceivedNotification.getSerialNo());
+            //(5) removing the message from on handling messages queue to free space
+            onHandlingMessages.remove(tfReceivedNotification.getSerialNo());
         }
     }
 }

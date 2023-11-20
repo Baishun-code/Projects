@@ -6,7 +6,8 @@ import com.psp.service.TransactionInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.sql.Date;
+
 
 @Service
 public class TransactionInfoServiceImpl implements TransactionInfoService {

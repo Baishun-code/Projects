@@ -45,7 +45,7 @@
     </trim>
   </insert>
 
-  <select id="queryUserInfoByUserId" resultType="com.psp.entity.TdUserContactInfo">
+  <select id="queryUserInfoByUserId" resultMap="BaseResultMap">
     select *
       from td_user_contact_info
      where USER_ID = #{userId}

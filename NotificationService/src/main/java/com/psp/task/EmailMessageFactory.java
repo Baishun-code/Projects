@@ -14,9 +14,9 @@ public class EmailMessageFactory implements MessageFactory{
                                             TdUserContactInfo userInfo) {
         String subject = "";
         String text = "";
-        if("01".equals(tfReceivedNotification.getNotiType())){
+        if("0".equals(tfReceivedNotification.getNotiType())){
             subject = "Transfer Finished";
-            text = "Hello dear Mr.".concat(userInfo.getUserName());
+            text = "Hello dear Mr.".concat(userInfo.getUserName()).concat("/n");
             text = text.concat(" You have successfully transferred ")
                     .concat(tfReceivedNotification.getContent())
                     .concat(" to the target account.");

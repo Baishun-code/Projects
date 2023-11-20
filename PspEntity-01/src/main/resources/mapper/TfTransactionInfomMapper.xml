@@ -95,7 +95,7 @@
       select * from tf_transaction_info
     </select>
 
-    <select id="queryTransactionBySerialNo" resultType="com.psp.entity.TfTransactionInfo">
+    <select id="queryTransactionBySerialNo" resultMap="BaseResultMap">
       select *
         from tf_transaction_info
        where SERIAL_NO = #{serialNo}

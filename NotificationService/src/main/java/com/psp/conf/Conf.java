@@ -28,7 +28,7 @@ public class Conf {
                                                        MailSender mailSender,
                                                        ReceivedNotificationService receivedNotificationService,
                                                        MessageFactory messageFactory,
-                                                       @Value("${tasks.core-pool-size}") String size){
+                                                       @Value("${notification-tasks.core-pool-size}") String size){
         Integer corePoolSize = Integer.valueOf(size);
         return new BasicMessageHandler(userInfoService, corePoolSize, mailSender, receivedNotificationService, messageFactory);
     }

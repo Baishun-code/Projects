@@ -64,6 +64,7 @@ public class DatabaseKafkaHandler implements KafkaListenerHandler {
             this.messageQueue = messageQueue;
             this.receivedNotificationService = receivedNotificationService;
             this.works = works;
+            RUNNING = true;
             this.workerIndex = workerIndex;
             this.userInfoService = userInfoService;
         }

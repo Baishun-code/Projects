@@ -67,6 +67,10 @@ public class FetchManagerService implements FetchManger{
         Map<String, MessageWrapper> curMessageMap = new HashMap<>();
         for (int i = 0; i < tdTxServices.size(); i++) {
             TdTxService tdTxService = tdTxServices.get(i);
+            //if the data is not clean neglect the data
+            if(tdTxService.getSerName() == null){
+                continue;
+            }
 
             //special url only for ribbon
             //http://service-name/request-path

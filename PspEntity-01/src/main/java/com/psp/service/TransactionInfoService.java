@@ -2,7 +2,8 @@ package com.psp.service;
 
 import com.psp.entity.TfTransactionInfo;
 
-import java.util.Date;
+import java.sql.Date;
+
 
 public interface TransactionInfoService {
 

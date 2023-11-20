@@ -69,9 +69,12 @@ public class MessageController {
     }
 
     @PostMapping("/noti/cancel")
-    public ResponseV0 cancelPendingNotification(String serialNo){
+    public ResponseV0 cancelPendingNotification(@RequestBody List<String> serialNos){
+        log.info("Receiving serialNo {}", serialNos);
         try {
-            notificationService.cancelMessage(Integer.valueOf(serialNo));
+            for (String serialNo : serialNos) {
+                notificationService.cancelMessage(Integer.valueOf(serialNo));
+            }
         }catch (Exception e){
             log.error(e.getMessage());
             return ResponseV0.fail("Fail to cancel data");

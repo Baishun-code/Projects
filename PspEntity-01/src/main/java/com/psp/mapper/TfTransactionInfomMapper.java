@@ -3,7 +3,7 @@ package com.psp.mapper;
 import com.psp.entity.TfTransactionInfo;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 public interface TfTransactionInfomMapper {
@@ -16,7 +16,7 @@ public interface TfTransactionInfomMapper {
     void updateTransactionStatus(@Param("serialNo") String serialNo,
                                  @Param("statusBefore") String statusBefore,
                                  @Param("status")String status,
-                                 @Param("finshTime")Date finshTime);
+                                 @Param("finshTime") Date finshTime);
 
     TfTransactionInfo queryTransactionBySerialNo(@Param("serialNo") String serialNo);
 }

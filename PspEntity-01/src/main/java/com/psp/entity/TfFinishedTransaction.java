@@ -3,7 +3,7 @@ package com.psp.entity;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * tf_finished_transaction

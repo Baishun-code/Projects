@@ -24,5 +24,6 @@ public class NotificationKafkaListener {
 
         kafkaListenerHandler.handle(message, index, acknowledgment);
 
+
     }
 }
