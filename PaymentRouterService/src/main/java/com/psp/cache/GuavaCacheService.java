@@ -3,11 +3,13 @@ package com.psp.cache;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.psp.service.BankInfoService;
 import com.psp.service.CacheService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Component
@@ -17,7 +19,7 @@ public class GuavaCacheService implements CacheService {
 
     private BankInfoService bankInfoService;
 
-    private Cache<String, Object> cache;
+    private LoadingCache<String, Object> cache;
 
     @Autowired
     public GuavaCacheService(BankInfoService bankInfoService) {
@@ -34,17 +36,21 @@ public class GuavaCacheService implements CacheService {
     }
 
     @Override
-    public Object get(Object key) {
+    public Object get(String key) {
         Object target = null;
         if(valid.get()){
-            target = cache.getIfPresent(key);
+            try {
+                target = cache.get(key);
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
         }
         return target;
     }
 
     @Override
-    public void put(Object key, Object value) {
-        //there is no use case now
+    public void put(String key, Object value) {
+        cache.put(key, value);
     }
 
     @Override

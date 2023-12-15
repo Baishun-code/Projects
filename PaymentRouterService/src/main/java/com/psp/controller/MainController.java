@@ -1,8 +1,11 @@
 package com.psp.controller;
 
 import com.psp.entity.ResponseV0;
+import com.psp.entity.TdBankMessageInfo;
 import com.psp.entity.TxTransactionInfo;
+import com.psp.service.CacheService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,9 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MainController {
 
+    @Autowired
+    private CacheService cacheService;
+
     @RequestMapping("/test")
-    public String test(){
-        return "test";
+    public Object test(@RequestParam("bankId") String id){
+        TdBankMessageInfo o = (TdBankMessageInfo) cacheService.get(id);
+        System.out.println(o.getBankId());
+        System.out.println("---------------------------");
+        return o;
     }
 
     @RequestMapping("/innerbank")

@@ -16,6 +16,8 @@ public class MainController {
     @Autowired
     private PaymentService paymentService;
 
+    //http://localhost:9000/v1/transfer
+    // ?amt=0.1&currency=001&acctId=S202310110001&targetAcctId=S202310310002&targetBank=bank-02
     @RequestMapping("/deposit")
     public ResponseV0 deposit(@RequestParam("amt") double amt,
                                  @RequestParam("currency") String currency,
